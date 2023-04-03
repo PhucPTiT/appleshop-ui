@@ -1,0 +1,48 @@
+@import '../GlobalStyles/variables';
+
+.header {
+    width: 100%;
+    background-color: #000;
+}
+.container {
+    max-width: 1200px;
+    padding: 12px;
+    margin: 0 auto;
+}
+.wrap-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .logo {
+        display: flex;
+        img {
+            width: 80px;
+        }
+        p {
+            font-size: 24px;
+            color: white;
+            padding-right: 8px;
+        }
+    }
+    .search {
+        max-width: 476px;
+        width: 100%;
+        background-color: $white-15;
+        display: flex;
+        align-items: center;
+        padding: 8px 6px;
+        border-radius: 4px;
+        input {
+            padding-left: 4px;
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: $gray500;
+        }
+    }
+    .user {
+        display: flex;
+        gap: 8px;
+    }
+}
