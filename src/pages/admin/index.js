@@ -1,3 +1,7 @@
-import Products from './products';
+import HeaderAd from './layouts/header';
 
-export { Products };
+function Admin() {
+    return <HeaderAd />;
+}
+
+export default Admin;

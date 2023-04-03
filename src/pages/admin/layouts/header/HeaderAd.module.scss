@@ -1,0 +1,26 @@
+.header {
+    width: 100%;
+    background-image: url('../../../assets/image/bg-login.png');
+    background-position: 100% 100%;
+
+    display: flex;
+    align-items: center;
+    .brand {
+        color: #fff;
+        font-size: 32px;
+        font-weight: 800;
+        padding: 8px 16px;
+        width: 80%;
+    }
+    .ad-search {
+        height: 32px;
+        background-color: $praimery;
+        color: #fff;
+        border-radius: 4px;
+        padding: 4px 8px;
+        max-width: 250px;
+        width: 100%;
+        margin-right: 12px;
+        flex: 1;
+    }
+}
