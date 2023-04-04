@@ -1,0 +1,46 @@
+@import '../../components/GlobalStyles/variables';
+.header {
+    width: 100%;
+    background-image: url('../../assets/image/bg-login.png');
+    background-position: 100% 100%;
+
+    display: flex;
+    align-items: center;
+    .fabars {
+        font-size: 32px;
+        margin: 0 8px;
+    }
+    .fabars:hover {
+        color: #fff;
+        cursor: pointer;
+    }
+    .brand {
+        color: #fff;
+        font-size: 32px;
+        font-weight: 800;
+        padding: 8px 16px;
+        width: 80%;
+    }
+    .search {
+        margin-right: 12px;
+        border-radius: 4px;
+        background-color: $bg-input;
+        display: flex;
+        align-items: center;
+        padding: 4px 8px;
+        max-width: 350px;
+        width: 100%;
+    }
+    .ad-search {
+        margin-left: 4px;
+        color: #fff;
+        background: transparent;
+        padding: 4px 16px;
+        width: 100%;
+    }
+    .faUser {
+        margin: 8px;
+        padding: 4px;
+        cursor: pointer;
+    }
+}
