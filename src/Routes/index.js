@@ -1,10 +1,24 @@
-import { Login, SignUp } from '~/pages/auth';
+import { createBrowserRouter } from 'react-router-dom';
+import DefaultLayoutAd from '~/layouts/DefaultLayoutAd';
 import Admin from '~/pages/admin';
+import CategoryAd from '~/pages/categoryad';
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <DefaultLayoutAd />,
+        children: [
+            {
+                path: '/admin/category',
+                element: <CategoryAd />,
+                // loader: ProductAd,
+            },
+            {
+                path: '/admin',
+                element: <Admin />,
+                // loader: ProductAd,
+            },
+        ],
+    },
+]);
 
-const publicRoutes = [
-    { path: '/login', component: Login },
-    { path: '/signup', component: SignUp },
-    { path: '/admin', component: Admin },
-];
-const privateRoutes = [];
-export { publicRoutes, privateRoutes };
+export { router };
