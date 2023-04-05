@@ -3,11 +3,13 @@ import styles from './CategoryAd.module.scss';
 import { CategoryService } from '~/service/categoryService';
 import { useEffect, useState } from 'react';
 import Action from '~/components/Action';
+import EditCategoryPopup from '~/components/EditCategoryPopup';
+// import EditCategoryPopup from '~/components/EditCategoryPopup';
 
 const cx = classNames.bind(styles);
 
 function CategoryAd() {
-    const [categories, setCategories] = useState();
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         const categoryService = new CategoryService();
@@ -25,6 +27,7 @@ function CategoryAd() {
                 <th>{category.code}</th>
                 <th>
                     <Action />
+                    <EditCategoryPopup props={category} />
                 </th>
             </tr>
         );
@@ -33,7 +36,7 @@ function CategoryAd() {
         <div className={cx('category')}>
             <div className={cx('wrap-table')}>
                 <div className={cx('header')}>
-                    <p>
+                    <p content={'abc'}>
                         Table <b>Categories</b>
                     </p>
                 </div>

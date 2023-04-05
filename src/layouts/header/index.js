@@ -4,7 +4,14 @@ import Input from '~/components/Input';
 import { FaBars, FaSearch, FaUser } from 'react-icons/fa';
 
 const cx = classNames.bind(styles);
-const test = { type: 'text', name: 'code', placeholder: 'Bạn đang tìm kiếm thông tin sản phẩm' };
+const inputField = {
+    type: 'text',
+    name: 'code',
+    placeholder: 'Bạn đang tìm kiếm thông tin sản phẩm',
+    value: '',
+    onchange: '',
+    classNames: '',
+};
 function HeaderAd(props) {
     const { onClick } = props;
     return (
@@ -12,8 +19,8 @@ function HeaderAd(props) {
             <FaBars className={cx('fabars')} onClick={onClick} />
             <p className={cx('brand')}>WEB ADMIN</p>
             <div className={cx('search')}>
-                <FaSearch fontSize={'20px'} color="#444b52" />
-                <Input fields={test} className={cx('ad-search')} />
+                <FaSearch fontSize={'20px'} color="#444b52" className={cx('faSearch')} />
+                <Input props={inputField} />
             </div>
             <FaUser className={cx('faUser')} fontSize={'32px'} color="white" />
         </div>
