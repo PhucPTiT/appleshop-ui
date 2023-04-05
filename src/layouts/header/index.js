@@ -9,8 +9,6 @@ const inputField = {
     name: 'code',
     placeholder: 'Bạn đang tìm kiếm thông tin sản phẩm',
     value: '',
-    onchange: '',
-    classNames: '',
 };
 function HeaderAd(props) {
     const { onClick } = props;

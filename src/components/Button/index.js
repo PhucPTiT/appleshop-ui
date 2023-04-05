@@ -1,5 +1,5 @@
 function Button(props) {
-    const { size, color, children, onClick } = props;
+    const { type, size, color, children, onClick } = props;
 
     const styles = {
         fontSize: size === 'large' ? '24px' : '16px',
@@ -12,7 +12,7 @@ function Button(props) {
     };
 
     return (
-        <button style={styles} onClick={onClick}>
+        <button type={type} style={styles} onClick={onClick}>
             {children}
         </button>
     );

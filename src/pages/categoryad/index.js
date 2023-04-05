@@ -2,14 +2,19 @@ import classNames from 'classnames/bind';
 import styles from './CategoryAd.module.scss';
 import { CategoryService } from '~/service/categoryService';
 import { useEffect, useState } from 'react';
-import Action from '~/components/Action';
 import EditCategoryPopup from '~/components/EditCategoryPopup';
-// import EditCategoryPopup from '~/components/EditCategoryPopup';
+import Action from '~/components/Action';
 
 const cx = classNames.bind(styles);
 
 function CategoryAd() {
     const [categories, setCategories] = useState([]);
+    const [rowCategory, setRowCategory] = useState();
+    const visibleEdit = rowCategory ? rowCategory : null;
+
+    const handleOpenPopup = (category) => {
+        setRowCategory(category);
+    };
 
     useEffect(() => {
         const categoryService = new CategoryService();
@@ -26,8 +31,7 @@ function CategoryAd() {
                 <th>{category.name}</th>
                 <th>{category.code}</th>
                 <th>
-                    <Action />
-                    <EditCategoryPopup props={category} />
+                    <Action onclick={() => handleOpenPopup(category)} exits={visibleEdit} />
                 </th>
             </tr>
         );
@@ -35,6 +39,7 @@ function CategoryAd() {
     return (
         <div className={cx('category')}>
             <div className={cx('wrap-table')}>
+                {visibleEdit && <EditCategoryPopup data={visibleEdit} onclick={() => handleOpenPopup(null)} />}
                 <div className={cx('header')}>
                     <p content={'abc'}>
                         Table <b>Categories</b>
@@ -44,7 +49,7 @@ function CategoryAd() {
                     <table className={cx('table-category')}>
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>id</th>
                                 <th>Category</th>
                                 <th>Category Code</th>
                                 <th>Action</th>

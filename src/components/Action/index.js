@@ -5,12 +5,12 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
 
 const cx = classNames.bind(styles);
-function Action() {
+function Action({ onclick }) {
     return (
         <div className={cx('action')}>
             <Tippy content={'Edit'}>
                 <i>
-                    <FaPen color="#ffc107" />
+                    <FaPen color="#ffc107" onClick={onclick} />
                 </i>
             </Tippy>
             <Tippy content={'Delete'}>
