@@ -8,4 +8,8 @@ export class CategoryService extends ServiceBase {
         const { id, name, code } = params;
         return this.put(`/category/${id}`, { name, code });
     };
+    remove = async (params) => {
+        const id = params.id;
+        return this.delete(`/category/${id}`);
+    };
 }

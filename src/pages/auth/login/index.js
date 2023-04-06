@@ -33,17 +33,11 @@ function Login() {
             // Không có lỗi
         })
         .catch((errors) => {
-            if (errors.inner.some((error) => error.path === 'fullName')) {
-                console.log(errors.inner.find((error) => error.path === 'fullName').message);
-            }
             if (errors.inner.some((error) => error.path === 'userName')) {
                 console.log(errors.inner.find((error) => error.path === 'userName').message);
             }
             if (errors.inner.some((error) => error.path === 'password')) {
                 console.log(errors.inner.find((error) => error.path === 'password').message);
-            }
-            if (errors.inner.some((error) => error.path === 'confirmPassword')) {
-                console.log(errors.inner.find((error) => error.path === 'confirmPassword').message);
             }
         });
     const onLogin = async (data) => {

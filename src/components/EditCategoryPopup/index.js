@@ -20,7 +20,6 @@ function EditCategoryPopup(data) {
     const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
 
     const category = data.data;
-    console.log(data);
     const handleOpenPopup = data.onclick;
     const fields = [
         {
