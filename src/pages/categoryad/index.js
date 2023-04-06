@@ -15,7 +15,6 @@ function CategoryAd() {
     const handleOpenPopup = (category) => {
         setRowCategory(category);
     };
-
     useEffect(() => {
         const categoryService = new CategoryService();
         const fetchData = async function () {
@@ -23,7 +22,7 @@ function CategoryAd() {
             setCategories(res);
         };
         fetchData();
-    }, []);
+    }, [rowCategory]);
     const categoriesTb = categories.map((category, index) => {
         return (
             <tr key={index}>

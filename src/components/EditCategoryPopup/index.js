@@ -8,35 +8,32 @@ import * as yup from 'yup';
 import FormGroup from '../FormGroup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { CategoryService } from '~/service/categoryService';
+
 const cx = classNames.bind(styles);
 
 function EditCategoryPopup(data) {
     const schema = yup.object().shape({
-        category: yup.string().required('Hãy điền đầy đủ trường này'),
-        categoryCode: yup.string().required('Hãy điền đầy đủ trường này'),
+        name: yup.string().required('Hãy điền đầy đủ trường này'),
+        code: yup.string().required('Hãy điền đầy đủ trường này'),
     });
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({ resolver: yupResolver(schema) });
+    const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
 
     const category = data.data;
+    console.log(data);
     const handleOpenPopup = data.onclick;
     const fields = [
         {
             type: 'text',
-            name: 'category',
+            name: 'name',
             placeholder: 'Chỉnh sửa thông tin thể loại sản phẩm',
             value: category.name,
-            classNames: 'category-ip',
         },
         {
             type: 'text',
-            name: 'categoryCode',
+            name: 'code',
             placeholder: 'Chỉnh sửa mã thể loại sản phẩm',
             value: category.code,
-            classNames: 'categoryCode-ip',
         },
     ];
     const InputField = fields.map((field, index) => {
@@ -46,8 +43,13 @@ function EditCategoryPopup(data) {
     const handleClick = (e) => {
         e.stopPropagation();
     };
-    const onEdit = () => {
-        console.log('state');
+    const categoryService = new CategoryService();
+    const onEdit = async (variableEdit) => {
+        variableEdit.id = category.id;
+        try {
+            await categoryService.edit(variableEdit);
+            handleOpenPopup();
+        } catch (error) {}
     };
     return createPortal(
         <>

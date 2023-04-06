@@ -12,6 +12,8 @@
         flex-direction: column;
         background-color: #fff;
         border-radius: 4px;
+        max-width: 500px;
+        width: 100%;
         .header {
             display: flex;
             align-items: center;
@@ -30,11 +32,12 @@
             }
         }
         .body {
-            padding: 8px 12px;
+            padding: 8px 24px;
             display: flex;
             flex-direction: column;
             button {
-                margin-top: 12px;
+                margin: 12px auto;
+                width: 65%;
             }
         }
     }
