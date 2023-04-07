@@ -2,10 +2,10 @@ import classNames from 'classnames/bind';
 import styles from './EditCategoryPopup.module.scss';
 
 import { FaTimes } from 'react-icons/fa';
-import Button from '../Button';
+import Button from '../../../../components/Button';
 import { createPortal } from 'react-dom';
 import * as yup from 'yup';
-import FormGroup from '../FormGroup';
+import FormGroup from '../../../../components/FormGroup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CategoryService } from '~/service/categoryService';

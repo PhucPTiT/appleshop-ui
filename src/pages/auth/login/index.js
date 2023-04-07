@@ -23,23 +23,23 @@ function Login() {
     } = useForm({ resolver: yupResolver(schema) });
 
     const authService = new AuthService();
-    const values = {
-        userName: '',
-        password: '',
-    };
-    schema
-        .validate(values)
-        .then(() => {
-            // Không có lỗi
-        })
-        .catch((errors) => {
-            if (errors.inner.some((error) => error.path === 'userName')) {
-                console.log(errors.inner.find((error) => error.path === 'userName').message);
-            }
-            if (errors.inner.some((error) => error.path === 'password')) {
-                console.log(errors.inner.find((error) => error.path === 'password').message);
-            }
-        });
+    // const values = {
+    //     userName: '',
+    //     password: '',
+    // };
+    // schema
+    //     .validate(values)
+    //     .then(() => {
+    //         // Không có lỗi
+    //     })
+    //     .catch((errors) => {
+    //         if (errors.inner.some((error) => error.path === 'userName')) {
+    //             console.log(errors.inner.find((error) => error.path === 'userName').message);
+    //         }
+    //         if (errors.inner.some((error) => error.path === 'password')) {
+    //             console.log(errors.inner.find((error) => error.path === 'password').message);
+    //         }
+    //     });
     const onLogin = async (data) => {
         try {
             await authService.register2(data);

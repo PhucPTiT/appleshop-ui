@@ -57,28 +57,28 @@ function SignUp() {
         agreed: yup.boolean().oneOf([true], 'Vui lòng xác nhận').required(),
     });
 
-    const values = {
-        fullName: '',
-        userName: '',
-        password: '',
-    };
+    // const values = {
+    //     fullName: '',
+    //     userName: '',
+    //     password: '',
+    // };
 
-    schema
-        .validate(values)
-        .then(() => {
-            // Không có lỗi
-        })
-        .catch((errors) => {
-            if (errors.inner.some((error) => error.path === 'fullName')) {
-                console.log(errors.inner.find((error) => error.path === 'fullName').message);
-            }
-            if (errors.inner.some((error) => error.path === 'userName')) {
-                console.log(errors.inner.find((error) => error.path === 'userName').message);
-            }
-            if (errors.inner.some((error) => error.path === 'password')) {
-                console.log(errors.inner.find((error) => error.path === 'password').message);
-            }
-        });
+    // schema
+    //     .validate(values)
+    //     .then(() => {
+    //         // Không có lỗi
+    //     })
+    //     .catch((errors) => {
+    //         if (errors.inner.some((error) => error.path === 'fullName')) {
+    //             console.log(errors.inner.find((error) => error.path === 'fullName').message);
+    //         }
+    //         if (errors.inner.some((error) => error.path === 'userName')) {
+    //             console.log(errors.inner.find((error) => error.path === 'userName').message);
+    //         }
+    //         if (errors.inner.some((error) => error.path === 'password')) {
+    //             console.log(errors.inner.find((error) => error.path === 'password').message);
+    //         }
+    //     });
     const authService = new AuthService();
     const {
         register,

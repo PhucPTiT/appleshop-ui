@@ -1,4 +1,4 @@
-@import '../GlobalStyles/variables';
+@import '../../../../components/GlobalStyles/variables';
 
 .wrap_popup {
     position: absolute;
@@ -7,14 +7,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    .popup {
+    .delete_popup {
         display: flex;
         flex-direction: column;
         background-color: #fff;
         border-radius: 4px;
         max-width: 500px;
         width: 100%;
-        .header {
+        &-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -31,14 +31,21 @@
                 opacity: 0.8;
             }
         }
-        .body {
-            padding: 8px 24px;
-            display: flex;
-            flex-direction: column;
-            button {
-                margin: 12px auto;
-                width: 65%;
+        &-body {
+            padding: 12px 32px;
+            .question {
+                font-size: 16px;
             }
+            .warning {
+                font-size: 12px;
+                font-weight: 700;
+                color: $red-delete;
+            }
+        }
+        &-footer {
+            padding: 12px;
+            display: flex;
+            justify-content: flex-end;
         }
     }
 }

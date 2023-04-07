@@ -12,4 +12,8 @@ export class CategoryService extends ServiceBase {
         const id = params.id;
         return this.delete(`/category/${id}`);
     };
+    add = async (params) => {
+        const { name, code } = params;
+        return this.post(`/category`, { name, code });
+    };
 }
