@@ -4,11 +4,33 @@ import Button from '~/components/Button';
 import { useEffect, useState } from 'react';
 import { ProductService } from '~/service/productService';
 import Action from '~/components/Action';
+import { AddPopup, EditProduct, DeletePopup } from './components';
 
 const cx = classNames.bind(styles);
 
 function ProductAd() {
     const [categories, SetCategories] = useState([]);
+    const [rowProduct, setRowProduct] = useState();
+    const [rowDelete, setRowDelete] = useState();
+
+    const [visibleAdd, setVisibleAdd] = useState(false);
+    const visibleEdit = rowProduct ? rowProduct : null;
+    const visibleDelete = rowDelete ? rowDelete : null;
+
+    //popup edit
+    const handleOpenEditPopup = (product) => {
+        setRowProduct(product);
+    };
+
+    //Popup Delete
+    const handleOpenPopupDelete = (product) => {
+        setRowDelete(product);
+    };
+
+    //popup add
+    const handleOpenAddPopup = () => {
+        setVisibleAdd(!visibleAdd);
+    };
 
     useEffect(() => {
         const productService = new ProductService();
@@ -17,8 +39,7 @@ function ProductAd() {
             SetCategories(res);
         };
         fetchData();
-    }, []);
-
+    }, [rowProduct, rowDelete, visibleAdd]);
     const categoriesTb = categories.map((category) => {
         const products = category.productDTOs ? category.productDTOs : [];
         const productsTb = products.map((product, index) => {
@@ -31,7 +52,10 @@ function ProductAd() {
                     <th>{product.imgLink}</th>
                     <th>{category.name}</th>
                     <th>
-                        <Action />
+                        <Action
+                            edit={() => handleOpenEditPopup(product)}
+                            remove={() => handleOpenPopupDelete(product)}
+                        />
                     </th>
                 </tr>
             );
@@ -40,12 +64,19 @@ function ProductAd() {
     });
     return (
         <div className={cx('product')}>
+            {visibleEdit && (
+                <EditProduct data={visibleEdit} categories={categories} onclick={() => handleOpenEditPopup(null)} />
+            )}
+            {visibleDelete && <DeletePopup data={visibleDelete} onclick={() => handleOpenPopupDelete(null)} />}
+            {visibleAdd && <AddPopup handleOpenAddPopup={handleOpenAddPopup} categories={categories} />}
             <div className={cx('wrap-table')}>
                 <div className={cx('header')}>
                     <p className={'content'}>
                         Table <b>Products</b>
                     </p>
-                    <Button color="blue">Add Product</Button>
+                    <Button color="blue" onclick={handleOpenAddPopup}>
+                        Add Product
+                    </Button>
                 </div>
                 <div className={cx('body')}>
                     <table className={cx('table-category')}>

@@ -44,6 +44,7 @@ function EditCategoryPopup(data) {
     };
     const categoryService = new CategoryService();
     const onEdit = async (variableEdit) => {
+        console.log(variableEdit);
         variableEdit.id = category.id;
         try {
             await categoryService.edit(variableEdit);

@@ -5,6 +5,7 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
 
 const cx = classNames.bind(styles);
+
 function Action(props) {
     const { edit, remove } = props;
     return (
