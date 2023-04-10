@@ -1,4 +1,4 @@
-@import '../GlobalStyles/variables';
+@import '../../../components/GlobalStyles/variables';
 
 .header {
     width: 100%;
@@ -15,13 +15,18 @@
     justify-content: space-between;
     .logo {
         display: flex;
+        align-items: center;
         img {
-            width: 80px;
+            width: 84px;
+            height: 32px;
         }
         p {
-            font-size: 24px;
+            font-size: 36px;
             color: white;
             padding-right: 8px;
+            font-family: 'Times New Roman', Times, serif;
+            border-right: 1px solid $white-15;
+            margin-right: 8px;
         }
     }
     .search {
@@ -32,6 +37,7 @@
         align-items: center;
         padding: 8px 6px;
         border-radius: 4px;
+        height: 28px;
         input {
             padding-left: 4px;
             flex: 1;
@@ -43,6 +49,18 @@
     }
     .user {
         display: flex;
+        align-items: center;
         gap: 8px;
+        .account {
+            display: flex;
+            align-items: center;
+        }
+        .cart {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            font-size: 14px;
+            gap: 4px;
+        }
     }
 }

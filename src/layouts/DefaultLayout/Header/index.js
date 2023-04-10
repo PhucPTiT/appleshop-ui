@@ -12,7 +12,7 @@ function Header() {
             <div className={cx('container')}>
                 <div className={cx('wrap-header')}>
                     <div className={cx('logo')}>
-                        <p>P.STUDIO</p>
+                        <p>P.Studio</p>
                         <img src={require('~/assets/image/copyright_logo.png')} alt={'myimage'} />
                     </div>
                     <div className={cx('search')}>
@@ -25,6 +25,7 @@ function Header() {
                         </div>
                         <div className={cx('cart')}>
                             <FaShoppingCart size="24px" color="#fff" />
+                            <span>Giỏ hàng</span>
                         </div>
                     </div>
                 </div>

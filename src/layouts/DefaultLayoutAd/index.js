@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import HeaderAd from '../header';
-import SidebarAd from '../sidebar';
+import HeaderAd from './header';
+import SidebarAd from './sidebar';
 
 import styles from './DefaultLayoutAd.module.scss';
 import classNames from 'classnames/bind';

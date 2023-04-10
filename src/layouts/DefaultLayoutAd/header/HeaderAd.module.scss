@@ -1,7 +1,7 @@
-@import '../../components/GlobalStyles/variables';
+@import '../../../components/GlobalStyles/variables';
 .header {
     width: 100%;
-    background-image: url('../../assets/image/bg-login.png');
+    background-image: url('../../../assets/image/bg-login.png');
     background-position: 100% 100%;
 
     display: flex;
