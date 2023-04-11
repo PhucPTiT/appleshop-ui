@@ -4,6 +4,7 @@ import DefaultLayoutAd from '~/layouts/DefaultLayoutAd';
 import Admin from '~/pages/admin';
 import { Login, SignUp } from '~/pages/auth';
 import CategoryAd from '~/pages/categoryad';
+import Home from '~/pages/home';
 import ProductDetailAd from '~/pages/productDetailad';
 import ProductAd from '~/pages/productad';
 const router = createBrowserRouter([
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
                 // loader: ProductAd,
             },
             {
-                path: '/admin/admin',
+                path: '/admin',
                 element: <Admin />,
                 // loader: ProductAd,
             },
@@ -35,7 +36,16 @@ const router = createBrowserRouter([
         element: <SignUp />,
         children: [],
     },
-    { path: '/', element: <DefaultLayout /> },
+    {
+        path: '/',
+        element: <DefaultLayout />,
+        children: [
+            {
+                path: '/',
+                element: <Home />,
+            },
+        ],
+    },
 ]);
 
 export { router };
