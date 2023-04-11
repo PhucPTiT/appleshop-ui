@@ -14,19 +14,20 @@
     align-items: center;
     justify-content: space-between;
     .logo {
+        text-decoration: none;
         display: flex;
         align-items: center;
         img {
             width: 84px;
             height: 32px;
+            border-left: 1px solid $white-15;
+            padding-left: 8px;
         }
         p {
             font-size: 36px;
             color: white;
             padding-right: 8px;
             font-family: 'Times New Roman', Times, serif;
-            border-right: 1px solid $white-15;
-            margin-right: 8px;
         }
     }
     .search {
