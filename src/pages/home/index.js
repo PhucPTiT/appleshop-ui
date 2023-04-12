@@ -1,13 +1,10 @@
 import classNames from 'classnames/bind';
-import styles from './Home.module.scss';
 import { Link } from 'react-router-dom';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Autoplay } from 'swiper/core';
-import 'swiper/css';
+
+import styles from './Home.module.scss';
+import { useEffect, useRef } from 'react';
 
 const cx = classNames.bind(styles);
-
-SwiperCore.use([Autoplay]);
 
 const BannerIphone14pro = () => {
     return (
@@ -31,6 +28,26 @@ const Bannerphone14 = () => {
     );
 };
 function Home() {
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        function handleScroll() {
+            const show = cx('show');
+            const containerTop = containerRef.current.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            if (containerTop < windowHeight * 0.55) {
+                containerRef.current.classList.add(show);
+            } else {
+                containerRef.current.classList.remove(show);
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
     return (
         <div className={cx('home')}>
             <BannerIphone14pro />
@@ -55,14 +72,17 @@ function Home() {
                     </Link>
                 </div>
             </div>
-            <Swiper autoplay={{ delay: 3000 }} className="mySwiper">
-                <SwiperSlide className={cx('slide')}>
-                    <img className={cx('img')} src={require('~/assets/image/home-swp-1.png')} alt="item-footer" />
-                </SwiperSlide>
-                <SwiperSlide className={cx('slide')}>
-                    <img className={cx('img')} src={require('~/assets/image/home-swp-3.jpg')} alt="item-footer" />
-                </SwiperSlide>
-            </Swiper>
+            <div className={cx('accessory')}>
+                <Link to="/" className={cx('wrap-container')} ref={containerRef}>
+                    <div className={cx('content')}>
+                        <span className={cx('name')}>Phụ kiện</span>
+                        <span className={cx('desc')}>Khám phá và tìm kiếm những thứ tốt nhất cho bạn</span>
+                    </div>
+                    <div className={cx('backgr')}>
+                        <img src={require('~/assets/image/bg-home-phukien-removebg.png')} alt="item-phukien"></img>
+                    </div>
+                </Link>
+            </div>
         </div>
     );
 }
