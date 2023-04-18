@@ -43,11 +43,6 @@ function AddPopup(props) {
             name: 'description',
             placeholder: 'Nhập mô tả của sản phẩm',
         },
-        {
-            type: 'text',
-            name: 'imgLink',
-            placeholder: 'nhập link ảnh của sản phẩm',
-        },
     ];
     const InputField = fields.map((field, index) => {
         return <FormGroup field={field} register={register} key={index} />;

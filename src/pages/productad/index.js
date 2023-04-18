@@ -49,7 +49,6 @@ function ProductAd() {
                     <th>{product.name}</th>
                     <th>{product.code}</th>
                     <th>{product.description}</th>
-                    <th>{product.imgLink}</th>
                     <th>{category.name}</th>
                     <th>
                         <Action
@@ -86,7 +85,6 @@ function ProductAd() {
                                 <th>Product</th>
                                 <th>Product Code</th>
                                 <th>Description</th>
-                                <th>Image Link</th>
                                 <th>Category</th>
                                 <th>Action</th>
                             </tr>

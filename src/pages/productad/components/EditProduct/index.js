@@ -47,12 +47,6 @@ function EditProduct(props) {
             placeholder: 'Nhập mô tả của sản phẩm',
             value: data.description,
         },
-        {
-            type: 'text',
-            name: 'imgLink',
-            placeholder: 'nhập link ảnh của sản phẩm',
-            value: data.imgLink,
-        },
     ];
     const InputField = fields.map((field, index) => {
         return <FormGroup field={field} register={register} key={index} />;
