@@ -1,52 +1,42 @@
-import classNames from 'classnames/bind';
-import styles from './EditCategoryPopup.module.scss';
-
-import { FaTimes } from 'react-icons/fa';
-import Button from '../../../../components/Button';
 import { createPortal } from 'react-dom';
+import classNames from 'classnames/bind';
+import styles from './Edit.module.scss';
 import * as yup from 'yup';
 import FormGroup from '../../../../components/FormGroup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CategoryService } from '~/service/categoryService';
+import { FaTimes } from 'react-icons/fa';
+import { MemoryService } from '~/service/memoryService';
+import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
-function EditCategoryPopup(data) {
+function EditPopup(data) {
     const schema = yup.object().shape({
-        name: yup.string().required('Hãy điền đầy đủ trường này'),
-        code: yup.string().required('Hãy điền đầy đủ trường này'),
+        type: yup.string().required('Hãy điền đầy đủ trường này'),
     });
     const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
 
-    const category = data.data;
+    const memory = data.data;
     const handleOpenPopup = data.onclick;
-    const fields = [
-        {
-            type: 'text',
-            name: 'name',
-            placeholder: 'Chỉnh sửa thông tin thể loại sản phẩm',
-            value: category.name,
-        },
-        {
-            type: 'text',
-            name: 'code',
-            placeholder: 'Chỉnh sửa mã thể loại sản phẩm',
-            value: category.code,
-        },
-    ];
-    const InputField = fields.map((field, index) => {
-        return <FormGroup field={field} register={register} key={index} />;
-    });
+    const field = {
+        type: 'text',
+        name: 'type',
+        placeholder: 'Chỉnh sửa thông tin bộ nhớ',
+        value: memory.type,
+    };
+    const InputField = () => {
+        return <FormGroup field={field} register={register} />;
+    };
 
     const handleClick = (e) => {
         e.stopPropagation();
     };
-    const categoryService = new CategoryService();
+    const memoryservice = new MemoryService();
     const onEdit = async (variableEdit) => {
-        variableEdit.id = category.id;
+        variableEdit.id = memory.id;
         try {
-            await categoryService.edit(variableEdit);
+            await memoryservice.edit(variableEdit);
             handleOpenPopup();
         } catch (error) {}
     };
@@ -55,11 +45,11 @@ function EditCategoryPopup(data) {
             <div className={cx('wrap_popup')} onClick={handleOpenPopup}>
                 <div className={cx('popup')} onClick={(e) => handleClick(e)}>
                     <div className={cx('header')}>
-                        <span>Edit Category</span>
+                        <span>Edit Memory</span>
                         <FaTimes className={cx('faTime')} onClick={handleOpenPopup} />
                     </div>
                     <form className={cx('body')} onSubmit={handleSubmit(onEdit)}>
-                        {InputField}
+                        <InputField />
                         <Button type="submit" size="" color="green">
                             Edit
                         </Button>
@@ -70,4 +60,5 @@ function EditCategoryPopup(data) {
         document.body,
     );
 }
-export default EditCategoryPopup;
+
+export default EditPopup;

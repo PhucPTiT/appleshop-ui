@@ -5,9 +5,10 @@ import Admin from '~/pages/admin';
 import { Login, SignUp } from '~/pages/auth';
 
 import CategoryAd from '~/pages/categoryad';
+import ColorAd from '~/pages/colorAd';
 import Home from '~/pages/home';
 import Iphone from '~/pages/iphone';
-import ProductDetailAd from '~/pages/productDetailad';
+import MemoryAd from '~/pages/memoryad';
 import ProductAd from '~/pages/productad';
 const router = createBrowserRouter([
     {
@@ -24,8 +25,9 @@ const router = createBrowserRouter([
                 element: <Admin />,
                 // loader: ProductAd,
             },
+            { path: '/admin/memory', element: <MemoryAd /> },
+            { path: '/admin/color', element: <ColorAd /> },
             { path: '/admin/product', element: <ProductAd /> },
-            { path: '/admin/productDetail', element: <ProductDetailAd /> },
         ],
     },
     {

@@ -1,6 +1,6 @@
 @import '../../components/GlobalStyles/variables';
 
-.category {
+.color {
     background-color: $bg-box;
     margin: 24px auto;
     padding: 20px 16px;
@@ -23,7 +23,7 @@
         }
     }
     .body {
-        .table-category {
+        .table-color {
             width: 100%;
             border-collapse: collapse;
             th {
