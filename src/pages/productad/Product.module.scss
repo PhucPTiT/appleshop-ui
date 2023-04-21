@@ -26,6 +26,7 @@
         .table-product {
             width: 100%;
             border-collapse: collapse;
+            td,
             th {
                 border: 1px solid $bg-box;
                 padding: 4px 8px;

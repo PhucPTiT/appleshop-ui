@@ -8,11 +8,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import FormGroup from '~/components/FormGroup';
 import { ProductService } from '~/service/productService';
+import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 function EditProduct(props) {
-    const { data, categories, onclick } = props;
+    const { data, onclick, categories, colors } = props;
+    const { id, name, code, description, imgLinks, list, categoryDTO, colorDTOs } = data;
+    console.log(colorDTOs);
 
     const handleOpenEditPopup = onclick;
     const handleClick = (e) => {
@@ -20,11 +23,12 @@ function EditProduct(props) {
     };
 
     const schema = yup.object().shape({
-        name: yup.string().required('Hãy điền đầy đủ trường này'),
-        code: yup.string().required('Hãy điền đầy đủ trường này'),
-        description: yup.string().required('Hãy điền đầy đủ trường này'),
-        imgLink: yup.string().required('Hãy điền đầy đủ trường này'),
-        categoryCode: yup.string().required('Hãy điền đầy đủ trường này'),
+        // name: yup.string().required('Hãy điền đầy đủ trường này'),
+        // code: yup.string().required('Hãy điền đầy đủ trường này'),
+        // description: yup.string().required('Hãy điền đầy đủ trường này'),
+        // imgLink: yup.string().required('Hãy điền đầy đủ trường này'),
+        // categoryCode: yup.string().required('Hãy điền đầy đủ trường này'),
+        // listcolors: yup.array().min(1).required(),
     });
     const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
 
@@ -33,27 +37,27 @@ function EditProduct(props) {
             type: 'text',
             name: 'name',
             placeholder: 'Nhập tên sản phẩm',
-            value: data.name,
+            value: name,
         },
         {
             type: 'text',
             name: 'code',
             placeholder: 'Nhập mã sản phẩm',
-            value: data.code,
+            value: code,
         },
         {
             type: 'text',
             name: 'description',
             placeholder: 'Nhập mô tả của sản phẩm',
-            value: data.description,
+            value: description,
         },
     ];
     const InputField = fields.map((field, index) => {
         return <FormGroup field={field} register={register} key={index} />;
     });
-    const Select = () => {
+    const SelectCategory = () => {
         return (
-            <select {...register('categoryCode')} defaultValue={data.categoryCode}>
+            <select {...register('categoryCode')} defaultValue={categoryDTO.code}>
                 {categories.map((category, index) => {
                     return (
                         <option value={category.code} key={index}>
@@ -64,13 +68,30 @@ function EditProduct(props) {
             </select>
         );
     };
+    const SelectColor = colors.map((color, index) => {
+        let ischecked = colorDTOs.some((item) => item.color === color.color);
+        return (
+            <div className={cx('item-color')} id={index} key={index}>
+                <p>{color.color}</p>
+                <input
+                    type="checkbox"
+                    name="listcolor"
+                    {...register('listcolor')}
+                    defaultChecked={ischecked}
+                    value={color.color}
+                />
+            </div>
+        );
+    });
     const productService = new ProductService();
-    const onEdit = async (variableEdit) => {
-        variableEdit.id = data.id;
-        try {
-            await productService.edit(variableEdit);
-            handleOpenEditPopup();
-        } catch (error) {}
+    const onEdit = (values) => {
+        console.log(values);
+        // console.log(variableEdit);
+        // variableEdit.id = data.id;
+        // try {
+        //     await productService.edit(variableEdit);
+        //     handleOpenEditPopup();
+        // } catch (error) {}
     };
 
     return createPortal(
@@ -84,7 +105,8 @@ function EditProduct(props) {
                     <form className={cx('body')} onSubmit={handleSubmit(onEdit)}>
                         {InputField}
                         <p className={cx('select')}>Select a category code for your product</p>
-                        <Select />
+                        <SelectCategory />
+                        {SelectColor}
                         <Button type="submit" size="" color="green">
                             Edit
                         </Button>

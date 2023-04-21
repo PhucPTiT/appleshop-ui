@@ -4,33 +4,56 @@ import Button from '~/components/Button';
 import { useEffect, useState } from 'react';
 import { ProductService } from '~/service/productService';
 import Action from '~/components/Action';
-import { AddPopup, EditProduct, DeletePopup } from './components';
+import { EditProduct } from './components';
+import { CategoryService } from '~/service/categoryService';
+import { ColorService } from '~/service/colorService';
+// import { AddPopup, EditProduct, DeletePopup } from './components';
 
 const cx = classNames.bind(styles);
 
 function ProductAd() {
-    const [products, SetProducts] = useState([]);
-    const [rowProduct, setRowProduct] = useState();
-    const [rowDelete, setRowDelete] = useState();
+    const [categories, SetCategories] = useState();
+    useEffect(() => {
+        const categoryService = new CategoryService();
+        const fetchData = async function () {
+            const res = await categoryService.view();
+            SetCategories(res);
+        };
+        fetchData();
+    }, []);
 
-    const [visibleAdd, setVisibleAdd] = useState(false);
+    const [colors, SetColors] = useState();
+    useEffect(() => {
+        const colorService = new ColorService();
+        const fetchData = async function () {
+            const res = await colorService.view();
+            SetColors(res);
+        };
+        fetchData();
+    }, []);
+
+    const [products, SetProducts] = useState([]);
+    const [rowProduct, SetRowProduct] = useState();
+    // const [rowDelete, SetRowDelete] = useState();
+
+    // const [visibleAdd, setVisibleAdd] = useState(false);
     const visibleEdit = rowProduct ? rowProduct : null;
-    const visibleDelete = rowDelete ? rowDelete : null;
+    // const visibleDelete = rowDelete ? rowDelete : null;
 
     //popup edit
     const handleOpenEditPopup = (product) => {
-        setRowProduct(product);
+        SetRowProduct(product);
     };
 
-    //Popup Delete
-    const handleOpenPopupDelete = (product) => {
-        setRowDelete(product);
-    };
+    // //Popup Delete
+    // const handleOpenPopupDelete = (product) => {
+    //     setRowDelete(product);
+    // };
 
-    //popup add
-    const handleOpenAddPopup = () => {
-        setVisibleAdd(!visibleAdd);
-    };
+    // //popup add
+    // const handleOpenAddPopup = () => {
+    //     setVisibleAdd(!visibleAdd);
+    // };
 
     useEffect(() => {
         const productService = new ProductService();
@@ -39,15 +62,32 @@ function ProductAd() {
             SetProducts(res);
         };
         fetchData();
-    }, [rowProduct, rowDelete, visibleAdd]);
+    }, []);
     const productsTb = products.map((product, index) => {
         const { id, name, code, description, imgLinks, list, categoryDTO, colorDTOs } = product;
-
         //link image
+        let images = imgLinks.trim();
+        let linksArray = imgLinks ? images.split(' ') : [];
+        let thImage = linksArray.map((link, index) => {
+            return (
+                <div className={cx('thimage')} key={index}>
+                    <p>{link}</p>
+                </div>
+            );
+        });
 
         // memory -price
+        const thList = list.map((item, index) => {
+            return (
+                <div className={cx('thlist')} key={index}>
+                    <span>{item.type}</span>
+                    <span>----</span>
+                    <span>{item.price.toLocaleString('vi-VN') + ' VNĐ'}</span>
+                </div>
+            );
+        });
 
-        //color
+        // color
         const thColor = colorDTOs.map((color, index) => {
             return (
                 <div className={cx('thcolor')} key={index}>
@@ -57,26 +97,31 @@ function ProductAd() {
         });
         return (
             <tr key={index}>
-                <th>{id}</th>
-                <th>{name}</th>
-                <th>{code}</th>
-                <th>{description}</th>
-                <th></th>
-                <th></th>
-                <th>{thColor}</th>
-                <th>{categoryDTO.name}</th>
-                <th>
-                    <Action edit={() => handleOpenEditPopup(product)} remove={() => handleOpenPopupDelete(product)} />
-                </th>
+                <td>{id}</td>
+                <td>{name}</td>
+                <td>{code}</td>
+                <td>{description}</td>
+                <td>{thImage}</td>
+                <td>{thList}</td>
+                <td>{thColor}</td>
+                <td>{categoryDTO.name}</td>
+                <td>
+                    <Action edit={() => handleOpenEditPopup(product)} />
+                </td>
             </tr>
         );
     });
     return (
         <div className={cx('product')}>
-            {/* {visibleEdit && (
-                <EditProduct data={visibleEdit} categories={categories} onclick={() => handleOpenEditPopup(null)} />
+            {visibleEdit && (
+                <EditProduct
+                    data={visibleEdit}
+                    categories={categories}
+                    colors={colors}
+                    onclick={() => handleOpenEditPopup(null)}
+                />
             )}
-            {visibleDelete && <DeletePopup data={visibleDelete} onclick={() => handleOpenPopupDelete(null)} />}
+            {/* {visibleDelete && <DeletePopup data={visibleDelete} onclick={() => handleOpenPopupDelete(null)} />}
             {visibleAdd && <AddPopup handleOpenAddPopup={handleOpenAddPopup} categories={categories} />} */}
             <div className={cx('wrap-table')}>
                 <div className={cx('header')}>
@@ -86,7 +131,7 @@ function ProductAd() {
                     <Button color="blue">Add Product</Button>
                 </div>
                 <div className={cx('body')}>
-                    <table className={cx('table-category')}>
+                    <table className={cx('table-product')}>
                         <thead>
                             <tr>
                                 <th>ID</th>
