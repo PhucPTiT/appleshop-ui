@@ -9,7 +9,7 @@ import { AddPopup, EditProduct, DeletePopup } from './components';
 const cx = classNames.bind(styles);
 
 function ProductAd() {
-    const [categories, SetCategories] = useState([]);
+    const [products, SetProducts] = useState([]);
     const [rowProduct, setRowProduct] = useState();
     const [rowDelete, setRowDelete] = useState();
 
@@ -36,60 +36,71 @@ function ProductAd() {
         const productService = new ProductService();
         const fetchData = async function () {
             const res = await productService.view();
-            SetCategories(res);
+            SetProducts(res);
         };
         fetchData();
     }, [rowProduct, rowDelete, visibleAdd]);
-    const categoriesTb = categories.map((category) => {
-        const products = category.productDTOs ? category.productDTOs : [];
-        const productsTb = products.map((product, index) => {
+    const productsTb = products.map((product, index) => {
+        const { id, name, code, description, imgLinks, list, categoryDTO, colorDTOs } = product;
+
+        //link image
+
+        // memory -price
+
+        //color
+        const thColor = colorDTOs.map((color, index) => {
             return (
-                <tr key={index}>
-                    <th>{product.id}</th>
-                    <th>{product.name}</th>
-                    <th>{product.code}</th>
-                    <th>{product.description}</th>
-                    <th>{category.name}</th>
-                    <th>
-                        <Action
-                            edit={() => handleOpenEditPopup(product)}
-                            remove={() => handleOpenPopupDelete(product)}
-                        />
-                    </th>
-                </tr>
+                <div className={cx('thcolor')} key={index}>
+                    <p>{color.color}</p>
+                </div>
             );
         });
-        return productsTb;
+        return (
+            <tr key={index}>
+                <th>{id}</th>
+                <th>{name}</th>
+                <th>{code}</th>
+                <th>{description}</th>
+                <th></th>
+                <th></th>
+                <th>{thColor}</th>
+                <th>{categoryDTO.name}</th>
+                <th>
+                    <Action edit={() => handleOpenEditPopup(product)} remove={() => handleOpenPopupDelete(product)} />
+                </th>
+            </tr>
+        );
     });
     return (
         <div className={cx('product')}>
-            {visibleEdit && (
+            {/* {visibleEdit && (
                 <EditProduct data={visibleEdit} categories={categories} onclick={() => handleOpenEditPopup(null)} />
             )}
             {visibleDelete && <DeletePopup data={visibleDelete} onclick={() => handleOpenPopupDelete(null)} />}
-            {visibleAdd && <AddPopup handleOpenAddPopup={handleOpenAddPopup} categories={categories} />}
+            {visibleAdd && <AddPopup handleOpenAddPopup={handleOpenAddPopup} categories={categories} />} */}
             <div className={cx('wrap-table')}>
                 <div className={cx('header')}>
                     <p className={'content'}>
                         Table <b>Products</b>
                     </p>
-                    <Button color="blue" onclick={handleOpenAddPopup}>
-                        Add Product
-                    </Button>
+                    <Button color="blue">Add Product</Button>
                 </div>
                 <div className={cx('body')}>
                     <table className={cx('table-category')}>
                         <thead>
                             <tr>
-                                <th>id</th>
-                                <th>Product</th>
-                                <th>Product Code</th>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Code</th>
                                 <th>Description</th>
+                                <th>Image Links</th>
+                                <th>Memory - Price</th>
+                                <th>Color</th>
                                 <th>Category</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>{categoriesTb}</tbody>
+                        <tbody>{productsTb}</tbody>
                     </table>
                 </div>
             </div>
