@@ -59,3 +59,36 @@
         display: inline-block;
     }
 }
+.imageSelect {
+    .title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #444b52;
+    }
+    .item-image {
+        display: flex;
+        input {
+            outline: 1px solid $gray-400;
+            padding: 2px;
+            margin-right: 8px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+        }
+    }
+    .button-add {
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        background-color: #000;
+        padding: 4px 16px;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    .button-add:hover {
+        opacity: 0.8;
+    }
+}

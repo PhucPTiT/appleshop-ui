@@ -7,6 +7,7 @@ import Action from '~/components/Action';
 import { EditProduct } from './components';
 import { CategoryService } from '~/service/categoryService';
 import { ColorService } from '~/service/colorService';
+import { MemoryService } from '~/service/memoryService';
 // import { AddPopup, EditProduct, DeletePopup } from './components';
 
 const cx = classNames.bind(styles);
@@ -28,6 +29,16 @@ function ProductAd() {
         const fetchData = async function () {
             const res = await colorService.view();
             SetColors(res);
+        };
+        fetchData();
+    }, []);
+
+    const [memories, setMemories] = useState();
+    useEffect(() => {
+        const memoryService = new MemoryService();
+        const fetchData = async function () {
+            const res = await memoryService.view();
+            setMemories(res);
         };
         fetchData();
     }, []);
@@ -118,6 +129,7 @@ function ProductAd() {
                     data={visibleEdit}
                     categories={categories}
                     colors={colors}
+                    memories={memories}
                     onclick={() => handleOpenEditPopup(null)}
                 />
             )}

@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Edit.module.scss';
-import { FaTimes } from 'react-icons/fa';
+import { FaBlenderPhone, FaPlusCircle, FaTimes, FaTrashRestoreAlt } from 'react-icons/fa';
 import Button from '~/components/Button';
 import { createPortal } from 'react-dom';
 import { useForm } from 'react-hook-form';
@@ -9,14 +9,13 @@ import * as yup from 'yup';
 import FormGroup from '~/components/FormGroup';
 import { ProductService } from '~/service/productService';
 import { useState } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function EditProduct(props) {
-    const { data, onclick, categories, colors } = props;
+    const { data, onclick, categories, colors, memories } = props;
     const { id, name, code, description, imgLinks, list, categoryDTO, colorDTOs } = data;
-    console.log(imgLinks);
-
     const handleOpenEditPopup = onclick;
     const handleClick = (e) => {
         e.stopPropagation();
@@ -79,6 +78,7 @@ function EditProduct(props) {
     const ColorSelect = () => {
         return (
             <div className={cx('colorSelect')}>
+                <span> Select list color for your product</span>
                 {colors.map((color, index) => {
                     let ischecked = colorDTOs.some((item) => item.color === color.color);
                     return (
@@ -101,11 +101,96 @@ function EditProduct(props) {
     const ListImage = () => {
         let images = imgLinks.trim();
         let linksArray = imgLinks ? images.split(' ') : [];
-        linksArray.map((link, index) => {
-            return <p> hihihih</p>;
-        });
-        return <div className={cx('listImage')}>{}</div>;
+        const [val, setVal] = useState(linksArray);
+
+        const handleAdd = () => {
+            const abc = [...val, []];
+            setVal(abc);
+        };
+
+        const handleChange = (onchangeValue, i) => {
+            const inputData = [...val];
+            inputData[i] = onchangeValue.target.value;
+            setVal(inputData);
+        };
+        const handleDelete = (i) => {
+            const defaultVal = [...val];
+            defaultVal.splice(i, 1);
+            setVal(defaultVal);
+        };
+        return (
+            <div className={cx('imageSelect')}>
+                <span className={cx('title')}>Type link image for product</span>
+                {val.map((data, index) => {
+                    return (
+                        <div className={cx('item-image')} key={index}>
+                            <input
+                                value={data}
+                                type="text"
+                                placeholder="type link image for product"
+                                onChange={(e) => handleChange(e, index)}
+                            />
+                            <FaTrashRestoreAlt color="red" onClick={() => handleDelete(index)} />
+                        </div>
+                    );
+                })}
+                <div className={cx('button-add')} onClick={() => handleAdd()}>
+                    <span>add image</span>
+                    <FaPlusCircle color="white" />
+                </div>
+            </div>
+        );
     };
+
+    const SelectMemoryPrice = () => {
+        const arrayMemory = [];
+        list.map((item) => {
+            arrayMemory.push(item.type);
+        });
+        const [memoried, SetMemoried] = useState(arrayMemory);
+        const handleMemoryChange = (e, oldValue) => {
+            SetMemoried((prevState) => {
+                const newMemoried = prevState.filter((item) => item !== oldValue);
+                newMemoried.push(e.target.value);
+                return newMemoried;
+            });
+        };
+        return (
+            <div className={cx('memoryPrice')}>
+                <span className={cx('title')}>Price with Memory</span>
+                <div className={cx('body')}>
+                    {list.map((item, index) => {
+                        return (
+                            <div className={cx('item')} key={index}>
+                                <select defaultValue={item.type} onChange={(e) => handleMemoryChange(e, item.type)}>
+                                    {memories.map((memory, index) => {
+                                        const { type } = memory;
+                                        if (type === item.type) {
+                                            return (
+                                                <option value={memory.type} key={index}>
+                                                    {memory.type}
+                                                </option>
+                                            );
+                                        }
+                                        if (!memoried.includes(type)) {
+                                            return (
+                                                <option value={memory.type} key={index}>
+                                                    {memory.type}
+                                                </option>
+                                            );
+                                        }
+                                    })}
+                                </select>
+                                <input value={item.price} type="text" placeholder="type link image for product" />
+                                <FaTrashRestoreAlt color="red" />
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        );
+    };
+
     const productService = new ProductService();
     const onEdit = (values) => {
         console.log(values);
@@ -131,6 +216,7 @@ function EditProduct(props) {
                         <SelectCategory />
                         <ColorSelect />
                         <ListImage />
+                        <SelectMemoryPrice />
                         <Button type="submit" size="" color="green">
                             Edit
                         </Button>
