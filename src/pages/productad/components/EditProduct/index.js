@@ -15,7 +15,7 @@ const cx = classNames.bind(styles);
 function EditProduct(props) {
     const { data, onclick, categories, colors } = props;
     const { id, name, code, description, imgLinks, list, categoryDTO, colorDTOs } = data;
-    console.log(colorDTOs);
+    console.log(imgLinks);
 
     const handleOpenEditPopup = onclick;
     const handleClick = (e) => {
@@ -52,9 +52,16 @@ function EditProduct(props) {
             value: description,
         },
     ];
-    const InputField = fields.map((field, index) => {
-        return <FormGroup field={field} register={register} key={index} />;
-    });
+    const InputField = () => {
+        return (
+            <div className={cx('inputField')}>
+                {fields.map((field, index) => {
+                    return <FormGroup field={field} register={register} key={index} />;
+                })}
+            </div>
+        );
+    };
+
     const SelectCategory = () => {
         return (
             <select {...register('categoryCode')} defaultValue={categoryDTO.code}>
@@ -68,21 +75,37 @@ function EditProduct(props) {
             </select>
         );
     };
-    const SelectColor = colors.map((color, index) => {
-        let ischecked = colorDTOs.some((item) => item.color === color.color);
+
+    const ColorSelect = () => {
         return (
-            <div className={cx('item-color')} id={index} key={index}>
-                <p>{color.color}</p>
-                <input
-                    type="checkbox"
-                    name="listcolor"
-                    {...register('listcolor')}
-                    defaultChecked={ischecked}
-                    value={color.color}
-                />
+            <div className={cx('colorSelect')}>
+                {colors.map((color, index) => {
+                    let ischecked = colorDTOs.some((item) => item.color === color.color);
+                    return (
+                        <div className={cx('item-color')} id={index} key={index}>
+                            <p>{color.color}</p>
+                            <input
+                                type="checkbox"
+                                name="listcolor"
+                                {...register('listcolor')}
+                                defaultChecked={ischecked}
+                                value={color.id}
+                            />
+                        </div>
+                    );
+                })}
             </div>
         );
-    });
+    };
+
+    const ListImage = () => {
+        let images = imgLinks.trim();
+        let linksArray = imgLinks ? images.split(' ') : [];
+        linksArray.map((link, index) => {
+            return <p> hihihih</p>;
+        });
+        return <div className={cx('listImage')}>{}</div>;
+    };
     const productService = new ProductService();
     const onEdit = (values) => {
         console.log(values);
@@ -103,10 +126,11 @@ function EditProduct(props) {
                         <FaTimes className={cx('faTime')} onClick={handleOpenEditPopup} />
                     </div>
                     <form className={cx('body')} onSubmit={handleSubmit(onEdit)}>
-                        {InputField}
+                        <InputField />
                         <p className={cx('select')}>Select a category code for your product</p>
                         <SelectCategory />
-                        {SelectColor}
+                        <ColorSelect />
+                        <ListImage />
                         <Button type="submit" size="" color="green">
                             Edit
                         </Button>
