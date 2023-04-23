@@ -78,7 +78,7 @@ function EditProduct(props) {
     const ColorSelect = () => {
         return (
             <div className={cx('colorSelect')}>
-                <span> Select list color for your product</span>
+                <span className={cx('title')}> Select list color for your product</span>
                 {colors.map((color, index) => {
                     let ischecked = colorDTOs.some((item) => item.color === color.color);
                     return (
@@ -143,49 +143,95 @@ function EditProduct(props) {
     };
 
     const SelectMemoryPrice = () => {
-        const arrayMemory = [];
-        list.map((item) => {
-            arrayMemory.push(item.type);
-        });
-        const [memoried, SetMemoried] = useState(arrayMemory);
-        const handleMemoryChange = (e, oldValue) => {
-            SetMemoried((prevState) => {
-                const newMemoried = prevState.filter((item) => item !== oldValue);
-                newMemoried.push(e.target.value);
+        const [memoried, setMemoried] = useState(list.map((item) => item.type));
+
+        const handleMemoryChange = (e, index) => {
+            const selectedMemoryType = e.target.value;
+
+            // Check if the selected memory type is not already used in other items
+            const isMemoryTypeAvailable =
+                !memoried.includes(selectedMemoryType) || (memoried[index] && selectedMemoryType === memoried[index]);
+
+            if (isMemoryTypeAvailable) {
+                setMemoried((prevMemoried) => {
+                    const newMemoried = [...prevMemoried];
+                    newMemoried[index] = selectedMemoryType;
+                    return newMemoried;
+                });
+
+                setVal((prevVal) => {
+                    const newVals = [...prevVal];
+                    newVals[index].type = selectedMemoryType;
+                    return newVals;
+                });
+            } else {
+                alert('This memory type is already used in another item!');
+            }
+        };
+
+        const [val, setVal] = useState(list);
+        const handleAdd = () => {
+            // Get all available memory types
+            const availableMemories = memories.filter((memory) => !memoried.includes(memory.type));
+
+            // Check if there are available memory types
+            if (availableMemories.length > 0) {
+                // Create a new item with the first available memory type
+                const newItem = {
+                    type: availableMemories[0].type,
+                    price: '',
+                };
+
+                // Update the state with the new item
+                setVal((prevVal) => [...prevVal, newItem]);
+
+                // Update the memoried array with the new memory type
+                setMemoried((prevMemoried) => [...prevMemoried, newItem.type]);
+            } else {
+                alert('All memory types are used!');
+            }
+        };
+        const handleDelete = (i) => {
+            setMemoried((prevMemoried) => {
+                const newMemoried = [...prevMemoried];
+                newMemoried.splice(i, 1);
                 return newMemoried;
             });
+
+            setVal((prevVal) => prevVal.filter((item, index) => index !== i));
         };
+
         return (
             <div className={cx('memoryPrice')}>
                 <span className={cx('title')}>Price with Memory</span>
                 <div className={cx('body')}>
-                    {list.map((item, index) => {
-                        return (
-                            <div className={cx('item')} key={index}>
-                                <select defaultValue={item.type} onChange={(e) => handleMemoryChange(e, item.type)}>
-                                    {memories.map((memory, index) => {
-                                        const { type } = memory;
-                                        if (type === item.type) {
-                                            return (
-                                                <option value={memory.type} key={index}>
-                                                    {memory.type}
-                                                </option>
-                                            );
-                                        }
-                                        if (!memoried.includes(type)) {
-                                            return (
-                                                <option value={memory.type} key={index}>
-                                                    {memory.type}
-                                                </option>
-                                            );
-                                        }
-                                    })}
+                    {val.map((item, index) => (
+                        <div className={cx('item')} key={item.type}>
+                            <div className={cx('memory')}>
+                                <span>Memory :</span>
+                                <select value={item.type} onChange={(e) => handleMemoryChange(e, index)}>
+                                    {memories.map((memory, i) => (
+                                        <option
+                                            value={memory.type}
+                                            key={i}
+                                            disabled={memoried.includes(memory.type) && memoried[index] !== memory.type}
+                                        >
+                                            {memory.type}
+                                        </option>
+                                    ))}
                                 </select>
-                                <input value={item.price} type="text" placeholder="type link image for product" />
-                                <FaTrashRestoreAlt color="red" />
                             </div>
-                        );
-                    })}
+                            <div className={cx('price')}>
+                                <span>Price :</span>
+                                <input defaultValue={item.price} type="number" placeholder="type price for product" />
+                            </div>
+                            <FaTrashRestoreAlt color="red" onClick={() => handleDelete(index)} />
+                        </div>
+                    ))}
+                    <div className={cx('button-add')} onClick={() => handleAdd()}>
+                        <span>add image</span>
+                        <FaPlusCircle color="white" />
+                    </div>
                 </div>
             </div>
         );

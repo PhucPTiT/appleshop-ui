@@ -49,14 +49,23 @@
         }
     }
 }
-
-.item-color {
-    width: 50%;
-    display: inline-block;
-    p,
-    input {
+.colorSelect {
+    .item-color {
         width: 50%;
         display: inline-block;
+        vertical-align: middle;
+        p,
+        input {
+            width: 50%;
+            display: inline-block;
+        }
+    }
+    .title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #444b52;
+        margin-right: 10px;
+        display: block;
     }
 }
 .imageSelect {
@@ -90,5 +99,36 @@
     }
     .button-add:hover {
         opacity: 0.8;
+    }
+}
+.memoryPrice {
+    display: flex;
+    flex-direction: column;
+    .title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #444b52;
+    }
+    .body {
+        display: flex;
+        .item {
+            display: flex;
+            justify-content: space-around;
+            gap: 24px;
+            .memory {
+                display: flex;
+            }
+            span {
+                white-space: nowrap;
+                font-size: 14px;
+                font-weight: 600;
+                color: #444b52;
+                margin-right: 4px;
+            }
+            .price {
+                display: flex;
+                align-items: center;
+            }
+        }
     }
 }
