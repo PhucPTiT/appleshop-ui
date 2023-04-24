@@ -229,7 +229,7 @@ function EditProduct(props) {
                         </div>
                     ))}
                     <div className={cx('button-add')} onClick={() => handleAdd()}>
-                        <span>add image</span>
+                        <span>add price and memory</span>
                         <FaPlusCircle color="white" />
                     </div>
                 </div>
@@ -250,7 +250,7 @@ function EditProduct(props) {
 
     return createPortal(
         <>
-            <div className={cx('wrap_popup')} onClick={handleOpenEditPopup}>
+            <div className={cx('wrap_popup')} id="edit-popup" onClick={handleOpenEditPopup}>
                 <div className={cx('popup')} onClick={(e) => handleClick(e)}>
                     <div className={cx('header')}>
                         <span>Edit Product</span>

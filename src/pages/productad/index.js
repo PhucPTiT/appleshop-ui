@@ -74,6 +74,27 @@ function ProductAd() {
         };
         fetchData();
     }, []);
+    useEffect(() => {
+        const handleMouseOver = () => {
+            document.body.style.overflow = 'hidden';
+        };
+        const handleMouseOut = () => {
+            document.body.style.overflow = 'auto';
+        };
+        const editPopup = document.getElementById('edit-popup');
+        if (editPopup) {
+            editPopup.addEventListener('mouseover', handleMouseOver);
+            editPopup.addEventListener('mouseout', handleMouseOut);
+        }
+        return () => {
+            if (editPopup) {
+                editPopup.removeEventListener('mouseover', handleMouseOver);
+                editPopup.removeEventListener('mouseout', handleMouseOut);
+            }
+            document.body.style.overflow = 'auto';
+            document.body.style.position = 'relative';
+        };
+    }, [visibleEdit]);
     const productsTb = products.map((product, index) => {
         const { id, name, code, description, imgLinks, list, categoryDTO, colorDTOs } = product;
         //link image
