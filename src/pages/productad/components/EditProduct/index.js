@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Edit.module.scss';
-import { FaBlenderPhone, FaPlusCircle, FaTimes, FaTrashRestoreAlt } from 'react-icons/fa';
+import { FaPlusCircle, FaTimes, FaTrashRestoreAlt } from 'react-icons/fa';
 import Button from '~/components/Button';
 import { createPortal } from 'react-dom';
 import { useForm } from 'react-hook-form';
@@ -9,13 +9,13 @@ import * as yup from 'yup';
 import FormGroup from '~/components/FormGroup';
 import { ProductService } from '~/service/productService';
 import { useState } from 'react';
-import { MemoryRouter } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function EditProduct(props) {
     const { data, onclick, categories, colors, memories } = props;
     const { id, name, code, description, imgLinks, list, categoryDTO, colorDTOs } = data;
+
     const handleOpenEditPopup = onclick;
     const handleClick = (e) => {
         e.stopPropagation();
@@ -29,7 +29,12 @@ function EditProduct(props) {
         // categoryCode: yup.string().required('Hãy điền đầy đủ trường này'),
         // listcolors: yup.array().min(1).required(),
     });
-    const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
+    const { register, handleSubmit } = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            list: [...list],
+        },
+    });
 
     const fields = [
         {
@@ -86,8 +91,8 @@ function EditProduct(props) {
                             <p>{color.color}</p>
                             <input
                                 type="checkbox"
-                                name="listcolor"
-                                {...register('listcolor')}
+                                name="color"
+                                {...register('colors')}
                                 defaultChecked={ischecked}
                                 value={color.id}
                             />
@@ -98,14 +103,15 @@ function EditProduct(props) {
         );
     };
 
+    let images = imgLinks.trim();
+    let linksArray = imgLinks ? images.split(' ') : [];
     const ListImage = () => {
-        let images = imgLinks.trim();
-        let linksArray = imgLinks ? images.split(' ') : [];
         const [val, setVal] = useState(linksArray);
 
         const handleAdd = () => {
-            const abc = [...val, []];
-            setVal(abc);
+            const newVal = [...val];
+            newVal.push('');
+            setVal(newVal);
         };
 
         const handleChange = (onchangeValue, i) => {
@@ -127,8 +133,10 @@ function EditProduct(props) {
                             <input
                                 value={data}
                                 type="text"
+                                name={`imgLinks-${index}`}
                                 placeholder="type link image for product"
                                 onChange={(e) => handleChange(e, index)}
+                                {...register('imgLinks')}
                             />
                             <FaTrashRestoreAlt color="red" onClick={() => handleDelete(index)} />
                         </div>
@@ -141,8 +149,9 @@ function EditProduct(props) {
             </div>
         );
     };
-
-    const SelectMemoryPrice = () => {
+    // Memory and Price
+    const SelectMemoryPrice = ({ Test }) => {
+        const [val, setVal] = useState(list);
         const [memoried, setMemoried] = useState(list.map((item) => item.type));
 
         const handleMemoryChange = (e, index) => {
@@ -164,12 +173,12 @@ function EditProduct(props) {
                     newVals[index].type = selectedMemoryType;
                     return newVals;
                 });
+                Test(val);
             } else {
                 alert('This memory type is already used in another item!');
             }
         };
 
-        const [val, setVal] = useState(list);
         const handleAdd = () => {
             // Get all available memory types
             const availableMemories = memories.filter((memory) => !memoried.includes(memory.type));
@@ -187,6 +196,7 @@ function EditProduct(props) {
 
                 // Update the memoried array with the new memory type
                 setMemoried((prevMemoried) => [...prevMemoried, newItem.type]);
+                Test(val);
             } else {
                 alert('All memory types are used!');
             }
@@ -199,6 +209,16 @@ function EditProduct(props) {
             });
 
             setVal((prevVal) => prevVal.filter((item, index) => index !== i));
+            Test(val);
+        };
+        const handlePriceChange = (e, index) => {
+            const value = e.target.value;
+            setVal((prevVal) => {
+                const newVal = [...prevVal];
+                newVal[index].price = value;
+                return newVal;
+            });
+            Test(val);
         };
 
         return (
@@ -223,7 +243,12 @@ function EditProduct(props) {
                             </div>
                             <div className={cx('price')}>
                                 <span>Price :</span>
-                                <input defaultValue={item.price} type="number" placeholder="type price for product" />
+                                <input
+                                    defaultValue={item.price}
+                                    type="number"
+                                    placeholder="type price for product"
+                                    onChange={(e) => handlePriceChange(e, index)}
+                                />
                             </div>
                             <FaTrashRestoreAlt color="red" onClick={() => handleDelete(index)} />
                         </div>
@@ -236,9 +261,14 @@ function EditProduct(props) {
             </div>
         );
     };
-
     const productService = new ProductService();
+    var check;
     const onEdit = (values) => {
+        console.log(check);
+
+        if (check) {
+            values.list = check;
+        }
         console.log(values);
         // console.log(variableEdit);
         // variableEdit.id = data.id;
@@ -248,6 +278,9 @@ function EditProduct(props) {
         // } catch (error) {}
     };
 
+    const Test = (a) => {
+        check = a;
+    };
     return createPortal(
         <>
             <div className={cx('wrap_popup')} id="edit-popup" onClick={handleOpenEditPopup}>
@@ -262,7 +295,7 @@ function EditProduct(props) {
                         <SelectCategory />
                         <ColorSelect />
                         <ListImage />
-                        <SelectMemoryPrice />
+                        <SelectMemoryPrice Test={Test} />
                         <Button type="submit" size="" color="green">
                             Edit
                         </Button>
