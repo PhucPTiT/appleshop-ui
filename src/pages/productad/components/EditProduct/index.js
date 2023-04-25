@@ -11,11 +11,14 @@ import { ProductService } from '~/service/productService';
 import { useState } from 'react';
 
 const cx = classNames.bind(styles);
-function isAnyObjectMissingKey(objects, keys) {
-    return objects.some((object) => {
-        return keys.some((key) => !(key in object));
-    });
+function isMissingKey(objects, key) {
+    if (!Array.isArray(objects)) {
+        console.log('vao');
+        return false;
+    }
+    return objects.some((obj) => !(key in obj && obj[key] !== ''));
 }
+
 function EditProduct(props) {
     const { data, onclick, categories, colors, memories } = props;
     const { id, name, code, description, imgLinks, list, categoryDTO, colorDTOs } = data;
@@ -26,14 +29,16 @@ function EditProduct(props) {
     };
 
     const schema = yup.object().shape({
-        // name: yup.string().required('Hãy điền đầy đủ trường này'),
-        // code: yup.string().required('Hãy điền đầy đủ trường này'),
-        // description: yup.string().required('Hãy điền đầy đủ trường này'),
-        // imgLink: yup.string().required('Hãy điền đầy đủ trường này'),
-        // categoryCode: yup.string().required('Hãy điền đầy đủ trường này'),
-        // listcolors: yup.array().min(1).required(),
+        name: yup.string().required('Hãy điền đầy đủ trường này'),
+        code: yup.string().required('Hãy điền đầy đủ trường này'),
+        description: yup.string().required('Hãy điền đầy đủ trường này'),
+        colors: yup.array().min(1).required(),
     });
-    const { register, handleSubmit } = useForm({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
             list: [...list],
@@ -58,6 +63,7 @@ function EditProduct(props) {
             name: 'description',
             placeholder: 'Nhập mô tả của sản phẩm',
             value: description,
+            className: { errors: errors.description?.message },
         },
     ];
     const InputField = () => {
@@ -107,8 +113,12 @@ function EditProduct(props) {
         );
     };
 
+    // Image
     let images = imgLinks.trim();
     let linksArray = imgLinks ? images.split(' ') : [];
+    const getLinkImg = (a) => {
+        images = a.join(' ');
+    };
     const ListImage = () => {
         const [val, setVal] = useState(linksArray);
 
@@ -128,6 +138,7 @@ function EditProduct(props) {
             defaultVal.splice(i, 1);
             setVal(defaultVal);
         };
+        getLinkImg(val);
         return (
             <div className={cx('imageSelect')}>
                 <span className={cx('title')}>Type link image for product</span>
@@ -140,7 +151,6 @@ function EditProduct(props) {
                                 name={`imgLinks-${index}`}
                                 placeholder="type link image for product"
                                 onChange={(e) => handleChange(e, index)}
-                                {...register('imgLinks')}
                             />
                             <FaTrashRestoreAlt color="red" onClick={() => handleDelete(index)} />
                         </div>
@@ -154,7 +164,7 @@ function EditProduct(props) {
         );
     };
     // Memory and Price
-    const SelectMemoryPrice = ({ Test }) => {
+    const SelectMemoryPrice = () => {
         const [val, setVal] = useState(list);
         const [memoried, setMemoried] = useState(list.map((item) => item.type));
 
@@ -177,7 +187,6 @@ function EditProduct(props) {
                     newVals[index].type = selectedMemoryType;
                     return newVals;
                 });
-                Test(val);
             } else {
                 alert('This memory type is already used in another item!');
             }
@@ -200,7 +209,6 @@ function EditProduct(props) {
 
                 // Update the memoried array with the new memory type
                 setMemoried((prevMemoried) => [...prevMemoried, newItem.type]);
-                getList(val);
             } else {
                 alert('Tất cả phiên bản bộ nhớ của sản phẩm đã được thêm');
             }
@@ -211,20 +219,18 @@ function EditProduct(props) {
                 newMemoried.splice(i, 1);
                 return newMemoried;
             });
-
             setVal((prevVal) => prevVal.filter((item, index) => index !== i));
-            getList(val);
         };
         const handlePriceChange = (e, index) => {
             const value = e.target.value;
-            console.log(value);
             setVal((prevVal) => {
                 const newVal = [...prevVal];
                 newVal[index].price = value;
                 return newVal;
             });
-            getList(val);
         };
+
+        getList(val);
 
         return (
             <div className={cx('memoryPrice')}>
@@ -267,22 +273,23 @@ function EditProduct(props) {
         );
     };
     const productService = new ProductService();
-    let check;
-    const onEdit = (values) => {
-        if (isAnyObjectMissingKey(check, ['price']) === true) {
-            values.list = check;
-        } else {
-            alert('Vui long điền đầy đủ giá tiền');
-        }
-        console.log(values);
-        // console.log(variableEdit);
-        // variableEdit.id = data.id;
-        // try {
-        //     await productService.edit(variableEdit);
-        //     handleOpenEditPopup();
-        // } catch (error) {}
-    };
 
+    const onEdit = async (values) => {
+        if (isMissingKey(check, 'price') === false) {
+            values.list = check;
+            values.imgLinks = images;
+            values.id = id;
+            // console.log(variableEdit);
+            // variableEdit.id = data.id;
+            try {
+                await productService.edit(values);
+                handleOpenEditPopup();
+            } catch (error) {}
+        } else {
+            alert('Vui lòng điền đầy đủ giá tiền');
+        }
+    };
+    let check;
     const getList = (a) => {
         check = a;
     };
@@ -296,11 +303,11 @@ function EditProduct(props) {
                     </div>
                     <form className={cx('body')} onSubmit={handleSubmit(onEdit)}>
                         <InputField />
-                        <p className={cx('select')}>Select a category code for your product</p>
+                        <p className={cx('select')}>Select a category for your product</p>
                         <SelectCategory />
                         <ColorSelect />
                         <ListImage />
-                        <SelectMemoryPrice getlist={getList} />
+                        <SelectMemoryPrice />
                         <Button type="submit" size="" color="green">
                             Edit
                         </Button>

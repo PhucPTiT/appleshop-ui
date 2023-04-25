@@ -5,15 +5,15 @@ export class ProductService extends ServiceBase {
         return this.get('/product');
     };
     edit = async (params) => {
-        const { id, name, code, description, categoryCode } = params;
-        return this.put(`/product/${id}`, { name, code, description, categoryCode });
+        const { id, name, code, description, categoryCode, list, colors, imgLinks } = params;
+        return this.put(`/product/${id}`, { name, code, description, categoryCode, list, colors, imgLinks });
     };
     remove = async (params) => {
         const id = params.id;
         return this.delete(`/product/${id}`);
     };
     add = async (params) => {
-        const { name, code, description, categoryCode } = params;
-        return this.post(`/product`, { name, code, description, categoryCode });
+        const { name, code, description, categoryCode, list, colors, imgLinks } = params;
+        return this.post(`/product`, { name, code, description, categoryCode, list, colors, imgLinks });
     };
 }

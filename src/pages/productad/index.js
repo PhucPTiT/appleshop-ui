@@ -4,11 +4,10 @@ import Button from '~/components/Button';
 import { useEffect, useState } from 'react';
 import { ProductService } from '~/service/productService';
 import Action from '~/components/Action';
-import { EditProduct } from './components';
+import { AddPopup, DeletePopup, EditProduct } from './components';
 import { CategoryService } from '~/service/categoryService';
 import { ColorService } from '~/service/colorService';
 import { MemoryService } from '~/service/memoryService';
-// import { AddPopup, EditProduct, DeletePopup } from './components';
 
 const cx = classNames.bind(styles);
 
@@ -45,26 +44,26 @@ function ProductAd() {
 
     const [products, SetProducts] = useState([]);
     const [rowProduct, SetRowProduct] = useState();
-    // const [rowDelete, SetRowDelete] = useState();
+    const [rowDelete, SetRowDelete] = useState();
 
-    // const [visibleAdd, setVisibleAdd] = useState(false);
+    const [visibleAdd, setVisibleAdd] = useState(false);
     const visibleEdit = rowProduct ? rowProduct : null;
-    // const visibleDelete = rowDelete ? rowDelete : null;
+    const visibleDelete = rowDelete ? rowDelete : null;
 
     //popup edit
     const handleOpenEditPopup = (product) => {
         SetRowProduct(product);
     };
 
-    // //Popup Delete
-    // const handleOpenPopupDelete = (product) => {
-    //     setRowDelete(product);
-    // };
+    //Popup Delete
+    const handleOpenPopupDelete = (product) => {
+        SetRowDelete(product);
+    };
 
     // //popup add
-    // const handleOpenAddPopup = () => {
-    //     setVisibleAdd(!visibleAdd);
-    // };
+    const handleOpenAddPopup = () => {
+        setVisibleAdd(!visibleAdd);
+    };
     useEffect(() => {
         if (visibleEdit) {
             document.body.style.overflow = 'hidden';
@@ -79,7 +78,7 @@ function ProductAd() {
             SetProducts(res);
         };
         fetchData();
-    }, []);
+    }, [visibleEdit, visibleDelete, visibleAdd]);
     const productsTb = products.map((product, index) => {
         const { id, name, code, description, imgLinks, list, categoryDTO, colorDTOs } = product;
         //link image
@@ -123,7 +122,7 @@ function ProductAd() {
                 <td>{thColor}</td>
                 <td>{categoryDTO.name}</td>
                 <td>
-                    <Action edit={() => handleOpenEditPopup(product)} />
+                    <Action edit={() => handleOpenEditPopup(product)} remove={() => handleOpenPopupDelete(product)} />
                 </td>
             </tr>
         );
@@ -139,14 +138,23 @@ function ProductAd() {
                     onclick={() => handleOpenEditPopup(null)}
                 />
             )}
-            {/* {visibleDelete && <DeletePopup data={visibleDelete} onclick={() => handleOpenPopupDelete(null)} />}
-            {visibleAdd && <AddPopup handleOpenAddPopup={handleOpenAddPopup} categories={categories} />} */}
+            {visibleDelete && <DeletePopup data={visibleDelete} onclick={() => handleOpenPopupDelete(null)} />}
+            {visibleAdd && (
+                <AddPopup
+                    handleOpenAddPopup={handleOpenAddPopup}
+                    categories={categories}
+                    colors={colors}
+                    memories={memories}
+                />
+            )}
             <div className={cx('wrap-table')}>
                 <div className={cx('header')}>
                     <p className={'content'}>
                         Table <b>Products</b>
                     </p>
-                    <Button color="blue">Add Product</Button>
+                    <Button color="blue" onclick={handleOpenAddPopup}>
+                        Add Product
+                    </Button>
                 </div>
                 <div className={cx('body')}>
                     <table className={cx('table-product')}>
