@@ -11,7 +11,11 @@ import { ProductService } from '~/service/productService';
 import { useState } from 'react';
 
 const cx = classNames.bind(styles);
-
+function isAnyObjectMissingKey(objects, keys) {
+    return objects.some((object) => {
+        return keys.some((key) => !(key in object));
+    });
+}
 function EditProduct(props) {
     const { data, onclick, categories, colors, memories } = props;
     const { id, name, code, description, imgLinks, list, categoryDTO, colorDTOs } = data;
@@ -196,9 +200,9 @@ function EditProduct(props) {
 
                 // Update the memoried array with the new memory type
                 setMemoried((prevMemoried) => [...prevMemoried, newItem.type]);
-                Test(val);
+                getList(val);
             } else {
-                alert('All memory types are used!');
+                alert('Tất cả phiên bản bộ nhớ của sản phẩm đã được thêm');
             }
         };
         const handleDelete = (i) => {
@@ -209,16 +213,17 @@ function EditProduct(props) {
             });
 
             setVal((prevVal) => prevVal.filter((item, index) => index !== i));
-            Test(val);
+            getList(val);
         };
         const handlePriceChange = (e, index) => {
             const value = e.target.value;
+            console.log(value);
             setVal((prevVal) => {
                 const newVal = [...prevVal];
                 newVal[index].price = value;
                 return newVal;
             });
-            Test(val);
+            getList(val);
         };
 
         return (
@@ -262,12 +267,12 @@ function EditProduct(props) {
         );
     };
     const productService = new ProductService();
-    var check;
+    let check;
     const onEdit = (values) => {
-        console.log(check);
-
-        if (check) {
+        if (isAnyObjectMissingKey(check, ['price']) === true) {
             values.list = check;
+        } else {
+            alert('Vui long điền đầy đủ giá tiền');
         }
         console.log(values);
         // console.log(variableEdit);
@@ -278,7 +283,7 @@ function EditProduct(props) {
         // } catch (error) {}
     };
 
-    const Test = (a) => {
+    const getList = (a) => {
         check = a;
     };
     return createPortal(
@@ -295,7 +300,7 @@ function EditProduct(props) {
                         <SelectCategory />
                         <ColorSelect />
                         <ListImage />
-                        <SelectMemoryPrice Test={Test} />
+                        <SelectMemoryPrice getlist={getList} />
                         <Button type="submit" size="" color="green">
                             Edit
                         </Button>
