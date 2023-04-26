@@ -42,7 +42,7 @@ function Login() {
     //     });
     const onLogin = async (data) => {
         try {
-            await authService.register2(data);
+            const test = await authService.register2(data);
             toast.success('Đăng nhập thành công', {
                 position: 'top-right',
                 autoClose: 3000,
@@ -53,8 +53,9 @@ function Login() {
                 progress: undefined,
                 theme: 'dark',
             });
-
-            sessionStorage.setItem('username', data.username);
+            // const token = response.data.token;
+            // console.log(token);
+            // sessionStorage.setItem('username', data.username);
 
             setTimeout(() => {
                 window.location.href = `/`;
