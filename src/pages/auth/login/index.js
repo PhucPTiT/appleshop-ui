@@ -54,6 +54,8 @@ function Login() {
                 theme: 'dark',
             });
 
+            sessionStorage.setItem('username', data.username);
+
             setTimeout(() => {
                 window.location.href = `/`;
             }, 3000);
