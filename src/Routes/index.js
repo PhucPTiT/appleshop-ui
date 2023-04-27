@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Navigate, Route, createBrowserRouter } from 'react-router-dom';
+import { Navigate, Route, Routes, createBrowserRouter } from 'react-router-dom';
 import DefaultLayout from '~/layouts/DefaultLayout';
 import DefaultLayoutAd from '~/layouts/DefaultLayoutAd';
 import Admin from '~/pages/admin';
@@ -11,42 +11,56 @@ import Home from '~/pages/home';
 import Iphone from '~/pages/iphone';
 import MemoryAd from '~/pages/memoryad';
 import ProductAd from '~/pages/productad';
+import jwt_decode from 'jwt-decode';
 
 function PrivateRoute({ element: Element, ...rest }) {
-    const [session, setSession] = useState(false); // sử dụng state để lưu trạng thái session
+    const [loading, setLoading] = useState(true); // Tạo biến loading
+    const [isAdmin, setIsAdmin] = useState(false);
+
     useEffect(() => {
-        const username = sessionStorage.getItem('username');
-        if (username) {
-            setSession(true);
+        const token = sessionStorage.getItem('token');
+        if (token) {
+            const decoded = jwt_decode(token);
+            if (decoded.role === 1) {
+                setIsAdmin(true);
+            }
         }
+        setLoading(false);
     }, []);
-    // Kiểm tra xem session có tồn tại không
-    if (!session) {
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!isAdmin) {
         return <Navigate to="/login" />;
     }
 
-    // Trả về element của route với props tương ứng
-    return <Route {...rest} element={<Element />} />;
+    return (
+        <Routes>
+            <Route {...rest} element={<Element />} />
+        </Routes>
+    );
 }
 
 const router = createBrowserRouter([
     {
-        path: '/admin',
+        path: '/admin/*',
         element: <PrivateRoute element={DefaultLayoutAd} />,
         children: [
             {
-                path: '/admin/category',
+                path: 'category',
                 element: <CategoryAd />,
                 // loader: ProductAd,
             },
             {
-                path: '/admin',
+                path: '',
                 element: <Admin />,
                 // loader: ProductAd,
             },
-            { path: '/admin/memory', element: <MemoryAd /> },
-            { path: '/admin/color', element: <ColorAd /> },
-            { path: '/admin/product', element: <ProductAd /> },
+            { path: 'memory', element: <MemoryAd /> },
+            { path: 'color', element: <ColorAd /> },
+            { path: 'product', element: <ProductAd /> },
         ],
     },
     {

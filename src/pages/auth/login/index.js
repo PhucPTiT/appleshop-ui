@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
 import { AuthService } from '~/service/authService';
 
+import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
@@ -12,6 +13,7 @@ import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Login() {
+    const navigate = useNavigate();
     const schema = yup.object().shape({
         userName: yup.string().required('Hãy điền đầy đủ tên đăng nhập của bạn'),
         password: yup.string().required('Hãy điền mật khẩu của bạn'),
@@ -42,7 +44,7 @@ function Login() {
     //     });
     const onLogin = async (data) => {
         try {
-            const test = await authService.register2(data);
+            const token = await authService.register2(data);
             toast.success('Đăng nhập thành công', {
                 position: 'top-right',
                 autoClose: 3000,
@@ -53,12 +55,10 @@ function Login() {
                 progress: undefined,
                 theme: 'dark',
             });
-            // const token = response.data.token;
-            // console.log(token);
-            // sessionStorage.setItem('username', data.username);
+            sessionStorage.setItem('token', token);
 
             setTimeout(() => {
-                window.location.href = `/`;
+                navigate('/admin', { replace: true });
             }, 3000);
         } catch (error) {
             if (error.response.data === 'Tên người dùng không tồn tại') {
