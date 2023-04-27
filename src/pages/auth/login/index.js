@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 
 const cx = classNames.bind(styles);
 
@@ -55,10 +56,13 @@ function Login() {
                 progress: undefined,
                 theme: 'dark',
             });
-            sessionStorage.setItem('token', token);
-
+            localStorage.setItem('token', token);
+            const decoded = jwt_decode(token);
             setTimeout(() => {
-                navigate('/admin', { replace: true });
+                if (decoded.role === 1) navigate('/admin');
+                else {
+                    navigate('/');
+                }
             }, 3000);
         } catch (error) {
             if (error.response.data === 'Tên người dùng không tồn tại') {
