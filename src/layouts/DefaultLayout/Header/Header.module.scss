@@ -64,6 +64,16 @@
             gap: 4px;
         }
     }
+    .btn-login {
+        a {
+            button {
+                font-weight: 500;
+            }
+        }
+    }
+    .btn-login:hover {
+        opacity: 0.8;
+    }
 }
 .header-nav {
     background-color: $gray-900;

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaSistrix, FaUser, FaShoppingCart, FaPhoneAlt } from 'react-icons/fa';
 
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import { Link, NavLink } from 'react-router-dom';
+import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
@@ -22,8 +23,11 @@ const navigation = listNav.map((item, index) => {
         </NavLink>
     );
 });
-
 function Header() {
+    const [token, setToken] = useState('');
+    useEffect(() => {
+        setToken(localStorage.getItem('token'));
+    }, []);
     return (
         <div>
             <div className={cx('header')}>
@@ -37,15 +41,26 @@ function Header() {
                             <FaSistrix />
                             <input type="text" placeholder="Bạn đang tìm kiếm sản phẩm" />
                         </div>
-                        <div className={cx('user')}>
-                            <div className={cx('account')}>
-                                <FaUser size="24px" color="#fff" />
+                        {!token && (
+                            <div className={cx('btn-login')}>
+                                <Link to="/login">
+                                    <Button color="transparency" text="#000 ">
+                                        Đăng Nhập
+                                    </Button>
+                                </Link>
                             </div>
-                            <div className={cx('cart')}>
-                                <FaShoppingCart size="24px" color="#fff" />
-                                <span>Giỏ hàng</span>
+                        )}
+                        {token && (
+                            <div className={cx('user')}>
+                                <div className={cx('account')}>
+                                    <FaUser size="24px" color="#fff" />
+                                </div>
+                                <div className={cx('cart')}>
+                                    <FaShoppingCart size="24px" color="#fff" />
+                                    <span>Giỏ hàng</span>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>

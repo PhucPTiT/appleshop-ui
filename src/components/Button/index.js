@@ -1,11 +1,11 @@
 function Button(props) {
-    const { type, size, color, children, onclick } = props;
+    const { type, size, color, children, onclick, text } = props;
 
     const styles = {
         fontSize: size === 'large' ? '24px' : '16px',
         padding: size === 'large' ? '12px 24px' : '8px 16px',
         backgroundColor: color,
-        color: '#fff',
+        color: text ? text : '#fff',
         borderRadius: '4px',
         border: 'none',
         cursor: 'pointer',

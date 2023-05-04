@@ -30,7 +30,7 @@ const listKey = [
 const KeySelling = listKey.map((key, index) => {
     const { icon, title, desc } = key;
     return (
-        <div className={cx('key-selling-item')}>
+        <div className={cx('key-selling-item')} key={index}>
             <div className={cx('icon')}>{icon}</div>
 
             <div className={cx('wrap-content')}>
