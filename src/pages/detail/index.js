@@ -1,8 +1,7 @@
-import classNames from "classnames/bind";
+import classNames from 'classnames/bind';
 import styles from './Detail.module.scss';
 
-const cx = classNames.bind(styles)
-
+const cx = classNames.bind(styles);
 
 function Detail() {
     const data = {
@@ -28,27 +27,35 @@ function Detail() {
 
     const prices = list.map((item) => item.price);
     const types = list.map((item) => item.type);
-
     return (
         <div className={cx('container')}>
             <div className={cx('detail')}>
                 <div className={cx('left')}>
-                    <img src={imgLinks}/>
+                    <img src={imgLinks} />
                 </div>
                 <div className={cx('right')}>
-                    <div className={cx('name')}>
-                        {name}
-                    </div>
-                    <div className={cx("price")}>
-                        <span className={cx("real_price")}></span>
+                    <div className={cx('name')}>{name}</div>
+                    <div className={cx('price')}>
+                        <span className={cx('real_price')}></span>
                         <strike> </strike>
                     </div>
-                    <div className={cx('memory')}></div>
+                    <div className={cx('memoryAndPrice')}>
+                        {list.map((item, index) => {
+                            return (
+                                <div key={index} className={cx('item')}>
+                                    <p>{item.type}</p>
+                                    <p>{item.price.toLocaleString('vi-VN') + ' VNĐ'}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
                     <div className={cx('color')}></div>
                     <div className={cx('btn-buynow')}>Mua ngay</div>
-                    <div className={cx('contact')}> <p>
-                        Gọi <a href="tel:18006601">1800 6601</a> để được tư vấn mua hàng (Miễn phí)
-                    </p></div>
+                    <div className={cx('contact')}>
+                        <p>
+                            Gọi <a href="tel:18006601">1800 6601</a> để được tư vấn mua hàng (Miễn phí)
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
