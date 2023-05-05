@@ -1,3 +1,9 @@
+import classNames from "classnames/bind";
+import styles from './Detail.module.scss';
+
+const cx = classNames.bind(styles)
+
+
 function Detail() {
     const data = {
         name: 'ipad gen9',
@@ -26,11 +32,27 @@ function Detail() {
     return (
         <div className={cx('container')}>
             <div className={cx('detail')}>
-                <div className={cx('left')}></div>
-                <div className={cx('right')}></div>
+                <div className={cx('left')}>
+                    <img src={imgLinks}/>
+                </div>
+                <div className={cx('right')}>
+                    <div className={cx('name')}>
+                        {name}
+                    </div>
+                    <div className={cx("price")}>
+                        <span className={cx("real_price")}></span>
+                        <strike> </strike>
+                    </div>
+                    <div className={cx('memory')}></div>
+                    <div className={cx('color')}></div>
+                    <div className={cx('btn-buynow')}>Mua ngay</div>
+                    <div className={cx('contact')}> <p>
+                        Gọi <a href="tel:18006601">1800 6601</a> để được tư vấn mua hàng (Miễn phí)
+                    </p></div>
+                </div>
             </div>
         </div>
     );
 }
 
-export default Det < div > ail;
+export default Detail;

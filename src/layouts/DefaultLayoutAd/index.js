@@ -5,6 +5,7 @@ import SidebarAd from './sidebar';
 import styles from './DefaultLayoutAd.module.scss';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
+import jwt_decode from 'jwt-decode';
 
 const cx = classNames.bind(styles);
 
@@ -14,10 +15,14 @@ function DefaultLayoutAd() {
     const navigate = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (!token) {
+        const decoded = jwt_decode(token);
+        if(!token) {
             navigate('/login');
         }
-    }, []);
+        else if (decoded.role !== 1) {
+            navigate('/');
+        }
+    }, [navigate]);
 
     return (
         <div className={cx('defaultLayoutAd')}>

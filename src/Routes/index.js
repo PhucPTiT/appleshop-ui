@@ -3,11 +3,12 @@ import DefaultLayout from '~/layouts/DefaultLayout';
 import DefaultLayoutAd from '~/layouts/DefaultLayoutAd';
 import Admin from '~/pages/admin';
 import { Login, SignUp } from '~/pages/auth';
+import Category from '~/pages/category';
 
 import CategoryAd from '~/pages/categoryad';
 import ColorAd from '~/pages/colorAd';
+import Detail from '~/pages/detail';
 import Home from '~/pages/home';
-import Iphone from '~/pages/iphone';
 import MemoryAd from '~/pages/memoryad';
 import ProductAd from '~/pages/productad';
 
@@ -51,7 +52,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/iphone',
-                element: <Iphone />,
+                element: <Category />,
+            },
+            {
+                path: '/iphone14',
+                element: <Detail />,
             },
         ],
     },

@@ -1,10 +1,10 @@
 import classNames from 'classnames/bind';
-import styles from './Iphone.module.scss';
+import styles from './Category.module.scss';
 import ProductItem from '~/components/ProductItem';
 
 const cx = classNames.bind(styles);
 
-function Iphone() {
+function Category() {
     return (
         <div className={cx('container')}>
             <div className={cx('category')}>
@@ -19,4 +19,4 @@ function Iphone() {
     );
 }
 
-export default Iphone;
+export default Category;
