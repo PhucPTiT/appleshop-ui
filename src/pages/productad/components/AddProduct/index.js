@@ -268,7 +268,7 @@ function AddPopup(props) {
             <div className={cx('wrap_popup')} onClick={handleOpenAddPopup}>
                 <div className={cx('add_popup')} onClick={(e) => handleClick(e)}>
                     <div className={cx('header')}>
-                        <span>Add Category</span>
+                        <span>Add Information Product</span>
                         <FaTimes className={cx('faTime')} onClick={handleOpenAddPopup} />
                     </div>
                     <form className={cx('body')} onSubmit={handleSubmit(onAdd)}>

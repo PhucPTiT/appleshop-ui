@@ -19,7 +19,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: 'category',
-                element: <CategoryAd />,
+                element: <CategoryAd  />,
                 // loader: ProductAd,
             },
             {
@@ -52,10 +52,26 @@ const router = createBrowserRouter([
             },
             {
                 path: '/iphone',
-                element: <Category />,
+                element: <Category title = "iPhone" />,
             },
             {
-                path: '/iphone14',
+                path: '/ipad',
+                element: <Category title = "iPad" />,
+            },
+            {
+                path: '/mac',
+                element: <Category title = "MAC" />,
+            },
+            {
+                path: '/watch',
+                element: <Category title = "Apple Watch"/>,
+            },
+            {
+                path: '/phu-kien',
+                element: <Category title = "Phụ kiện" />,
+            },
+            {
+                path: '/:category/:productCode',
                 element: <Detail />,
             },
         ],

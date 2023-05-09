@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { FaSistrix, FaUser, FaShoppingCart, FaPhoneAlt } from 'react-icons/fa';
+import { FaSistrix, FaUser, FaShoppingCart, FaPhoneAlt, FaSignOutAlt } from 'react-icons/fa';
+import Tippy from '@tippyjs/react/headless';
+import jwt_decode from 'jwt-decode';
+
+
 
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
@@ -24,10 +28,40 @@ const navigation = listNav.map((item, index) => {
     );
 });
 function Header() {
+    const navigate = useNavigate();
+    const handleSignOut = () => {
+        localStorage.removeItem('token');
+        navigate('/login');
+    };
     const [token, setToken] = useState('');
+    const [visible, setVisible] = useState(false);
+
+    const handleClickUserIcon = () => {
+        setVisible(!visible);
+    }
     useEffect(() => {
         setToken(localStorage.getItem('token'));
     }, []);
+
+    const MenuInforUser = () => {
+        if(token) {
+            const decoded = jwt_decode(token);
+            const {username, name} = decoded;
+            return(
+                <div>
+                    <div className={cx('wrap-infor', 'item')}>
+                        <div className={cx("name")}>{name}</div>
+                        <div className={cx("username")}>{username}</div>
+                    </div>
+                    <div className={cx('sign-out', 'item')} onClick={handleSignOut}> 
+                        <FaSignOutAlt className={cx('icon')}/>
+                        Đăng Xuất
+                    </div> 
+                </div>
+            )
+        }
+        return <div>Đây là menu User</div>
+    }
     return (
         <div>
             <div className={cx('header')}>
@@ -52,8 +86,22 @@ function Header() {
                         )}
                         {token && (
                             <div className={cx('user')}>
-                                <div className={cx('account')}>
-                                    <FaUser size="24px" color="#fff" />
+                                <div>
+                                    <Tippy
+                                        interactive
+                                        visible = {visible}
+                                        placement= {'bottom-end'}
+                                        render = { attrs => (
+                                            <div className={cx("infor")} tabIndex="-1" {...attrs}>
+                                                <MenuInforUser/>
+                                            </div>
+                                        )
+                                    }
+                                    >
+                                        <div className={cx('account')}>
+                                            <FaUser size="24px" color="#fff" onClick={handleClickUserIcon}/>
+                                        </div>
+                                    </Tippy>
                                 </div>
                                 <div className={cx('cart')}>
                                     <FaShoppingCart size="24px" color="#fff" />

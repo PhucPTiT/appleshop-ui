@@ -26,7 +26,7 @@ function AddPopup(props) {
     const field = {
         type: 'text',
         name: 'color',
-        placeholder: 'Hãy thêm bộ nhớ vào đây',
+        placeholder: 'Hãy thêm màu sản phẩm',
     };
 
     const InputField = () => {

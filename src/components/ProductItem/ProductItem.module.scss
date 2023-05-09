@@ -1,13 +1,14 @@
 .product {
     max-width: 345px;
     height: 534px;
-    background: #fff;
     border-radius: 12px;
     padding: 24px 12px 32px;
     display: flex;
     align-items: center;
     flex-direction: column;
     border: solid 1px #edeeef;
+    position: relative;
+ 
     &__img {
         background-size: cover;
         background-position: center;
@@ -28,6 +29,7 @@
             background-color: aquamarine;
             border-radius: 50%;
             width: 24px;
+            height: 24px;
         }
     }
     &__name {
@@ -89,6 +91,7 @@
         color: #6a737a;
         border: 1px solid #cbd1d6;
         border-radius: 4px;
+        text-decoration: none;
     }
     .btn_view:hover {
         background-color: #6a737a;

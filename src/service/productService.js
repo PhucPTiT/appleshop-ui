@@ -16,4 +16,13 @@ export class ProductService extends ServiceBase {
         const { name, code, description, categoryCode, list, colors, imgLinks } = params;
         return this.post(`/product`, { name, code, description, categoryCode, list, colors, imgLinks });
     };
+    viewProductByCate = async (params) => {
+        const {device} = params;
+        return this.get(`/product/${device}`);
+    };
+    viewProductByCode = async (params) => {
+        const {productCode} = params;
+        return this.get(`/product/code/${productCode}`);
+    };
+
 }

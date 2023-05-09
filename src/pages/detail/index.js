@@ -1,32 +1,102 @@
 import classNames from 'classnames/bind';
 import styles from './Detail.module.scss';
+import { useParams } from 'react-router-dom';
+import { ColorService } from '~/service/colorService';
+import { ProductService } from '~/service/productService';
+import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 function Detail() {
-    const data = {
-        name: 'ipad gen9',
-        code: 'ipad_gen_9',
-        description: 'đây là ipad gen 9',
-        categoryCode: 'ipad',
-        list: [
-            {
-                price: 49000000,
-                type: '128gb',
-            },
-            {
-                price: 1000000000,
-                type: '256gb',
-            },
-        ],
-        colors: ['1', '2', '3', '5'],
-        imgLinks:
-            'https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2022/9/9/637983183015007948_iphone-14-pro-max-dd-fstudio.jpg',
-    };
-    const { imgLinks, colors, name, list } = data;
+    const { productCode } = useParams();
+    
+    const [product, setProduct] = useState([])
 
-    const prices = list.map((item) => item.price);
-    const types = list.map((item) => item.type);
+    useEffect(() => {
+        const productService = new ProductService();
+        const fetchData = async function () {
+            const res = await productService.viewProductByCode({productCode});
+            setProduct(res);
+        };
+        fetchData();
+    }, [productCode]);
+
+    console.log(product)
+    const {imgLinks, name, list} = product;
+    const imageArray = imgLinks ? imgLinks.split(" ") : "";
+    console.log(imageArray)
+    // const title = productCode.charAt(0).toUpperCase() + productCode.slice(1);
+    // console.log(title)
+    // const data = {
+    //     "id": 4,
+    //     "createBy": null,
+    //     "createDate": null,
+    //     "modifiedBy": null,
+    //     "modifiedDate": null,
+    //     "name": "iphone12",
+    //     "code": "iphone_12",
+    //     "categoryCode": "iphone",
+    //     "description": "đây là iphone 12",
+    //     "imgLinks": "hahahahahahahahahahahahaha",
+    //     "colors": null,
+    //     "list": [
+    //         {
+    //             "price": 230.00,
+    //             "type": "128gb"
+    //         },
+    //         {
+    //             "price": 20.00,
+    //             "type": "256gb"
+    //         }
+    //     ],
+    //     "categoryDTO": {
+    //         "id": 1,
+    //         "createBy": null,
+    //         "createDate": null,
+    //         "modifiedBy": null,
+    //         "modifiedDate": null,
+    //         "name": "iphone",
+    //         "code": "iphone"
+    //     },
+    //     "colorDTOs": [
+    //         {
+    //             "id": 1,
+    //             "createBy": null,
+    //             "createDate": null,
+    //             "modifiedBy": null,
+    //             "modifiedDate": null,
+    //             "color": "xanh "
+    //         },
+    //         {
+    //             "id": 2,
+    //             "createBy": null,
+    //             "createDate": null,
+    //             "modifiedBy": null,
+    //             "modifiedDate": null,
+    //             "color": "do "
+    //         },
+    //         {
+    //             "id": 3,
+    //             "createBy": null,
+    //             "createDate": null,
+    //             "modifiedBy": null,
+    //             "modifiedDate": null,
+    //             "color": "tim "
+    //         },
+    //         {
+    //             "id": 4,
+    //             "createBy": null,
+    //             "createDate": null,
+    //             "modifiedBy": null,
+    //             "modifiedDate": null,
+    //             "color": "vang "
+    //         }
+    //     ]
+    // };
+    // const { imgLinks, colors, name, list } = data;
+
+    // const prices = list.map((item) => item.price);
+    // const types = list.map((item) => item.type);
     return (
         <div className={cx('container')}>
             <div className={cx('detail')}>
@@ -39,7 +109,7 @@ function Detail() {
                         <span className={cx('real_price')}></span>
                         <strike> </strike>
                     </div>
-                    <div className={cx('memoryAndPrice')}>
+                    {/* <div className={cx('memoryAndPrice')}>
                         {list.map((item, index) => {
                             return (
                                 <div key={index} className={cx('item')}>
@@ -48,8 +118,10 @@ function Detail() {
                                 </div>
                             );
                         })}
+                    </div> */}
+                    <div className={cx('color')}>
+
                     </div>
-                    <div className={cx('color')}></div>
                     <div className={cx('btn-buynow')}>Mua ngay</div>
                     <div className={cx('contact')}>
                         <p>

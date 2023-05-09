@@ -113,3 +113,31 @@
         border-radius: 6px;
     }
 }
+.infor {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 4px 8px;
+    .wrap-infor {
+        .name{
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .username {
+            font-size: 14px;
+            
+        }
+        margin-bottom: 4px;
+        border-bottom: 1px solid $gray-400;
+    }
+    .sign-out {
+        display: flex;
+        align-items: center;
+        .icon  {
+            margin-right: 8px;
+        }
+    }
+    .item:hover {
+        color: $gray-400;
+        cursor: pointer;
+    }
+}

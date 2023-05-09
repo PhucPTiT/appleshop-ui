@@ -16,4 +16,8 @@ export class CategoryService extends ServiceBase {
         const { name, code } = params;
         return this.post(`/category`, { name, code });
     };
+    viewWithCategory = async (params) => {
+        const {category} = params;
+        return this.get(`/category/${category}`)
+    }
 }
