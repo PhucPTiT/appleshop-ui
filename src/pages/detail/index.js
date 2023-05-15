@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './Detail.module.scss';
 import { useParams } from 'react-router-dom';
-import { ColorService } from '~/service/colorService';
+
 import { ProductService } from '~/service/productService';
 import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -55,7 +55,7 @@ function Detail() {
                         imageArray.map((item, index) => {
                             return (
                                 <SwiperSlide key={index}>
-                                    <img src={item} />
+                                    <img src={item} alt='Hình ảnh sản phẩm'/>
                                 </SwiperSlide>
                             );
                         })}

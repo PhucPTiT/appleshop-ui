@@ -36,8 +36,9 @@
             display: flex;
             background: #edeeef;
             border-radius: 6px;
+            border: 2px solid #fff;
             .active {
-                border: 1px solid #000;
+                border: 2px solid $blue-eye;
                 border-radius: 4px;
             }
             .item {
@@ -63,7 +64,7 @@
                 }
             }
             .item:hover {
-                border: 1px solid #000;
+                border: 2px solid $blue-eye;
                 border-radius: 4px;
             }
         }
@@ -88,7 +89,7 @@
                 }
             }
             .active {
-                border: 1px solid #000;
+                border: 2px solid $blue-eye;
                 .color_name {
                     font-weight: 500;
                 }
