@@ -3,8 +3,6 @@ import { FaSistrix, FaUser, FaShoppingCart, FaPhoneAlt, FaSignOutAlt } from 'rea
 import Tippy from '@tippyjs/react/headless';
 import jwt_decode from 'jwt-decode';
 
-
-
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
@@ -38,30 +36,30 @@ function Header() {
 
     const handleClickUserIcon = () => {
         setVisible(!visible);
-    }
+    };
     useEffect(() => {
         setToken(localStorage.getItem('token'));
     }, []);
 
     const MenuInforUser = () => {
-        if(token) {
+        if (token) {
             const decoded = jwt_decode(token);
-            const {username, name} = decoded;
-            return(
+            const { username, name } = decoded;
+            return (
                 <div>
                     <div className={cx('wrap-infor', 'item')}>
-                        <div className={cx("name")}>{name}</div>
-                        <div className={cx("username")}>{username}</div>
+                        <div className={cx('name')}>{name}</div>
+                        <div className={cx('username')}>{username}</div>
                     </div>
-                    <div className={cx('sign-out', 'item')} onClick={handleSignOut}> 
-                        <FaSignOutAlt className={cx('icon')}/>
+                    <div className={cx('sign-out', 'item')} onClick={handleSignOut}>
+                        <FaSignOutAlt className={cx('icon')} />
                         Đăng Xuất
-                    </div> 
+                    </div>
                 </div>
-            )
+            );
         }
-        return <div>Đây là menu User</div>
-    }
+        return <div>Đây là menu User</div>;
+    };
     return (
         <div>
             <div className={cx('header')}>
@@ -89,24 +87,25 @@ function Header() {
                                 <div>
                                     <Tippy
                                         interactive
-                                        visible = {visible}
-                                        placement= {'bottom-end'}
-                                        render = { attrs => (
-                                            <div className={cx("infor")} tabIndex="-1" {...attrs}>
-                                                <MenuInforUser/>
+                                        visible={visible}
+                                        placement={'bottom-end'}
+                                        render={(attrs) => (
+                                            <div className={cx('infor')} tabIndex="-1" {...attrs}>
+                                                <MenuInforUser />
                                             </div>
-                                        )
-                                    }
+                                        )}
                                     >
                                         <div className={cx('account')}>
-                                            <FaUser size="24px" color="#fff" onClick={handleClickUserIcon}/>
+                                            <FaUser size="24px" color="#fff" onClick={handleClickUserIcon} />
                                         </div>
                                     </Tippy>
                                 </div>
-                                <div className={cx('cart')}>
-                                    <FaShoppingCart size="24px" color="#fff" />
-                                    <span>Giỏ hàng</span>
-                                </div>
+                                <Link to="/cart" style={{ textDecoration: 'none' }}>
+                                    <div className={cx('cart')}>
+                                        <FaShoppingCart size="24px" color="#fff" />
+                                        <span>Giỏ hàng</span>
+                                    </div>
+                                </Link>
                             </div>
                         )}
                     </div>

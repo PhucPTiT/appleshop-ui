@@ -3,6 +3,7 @@ import DefaultLayout from '~/layouts/DefaultLayout';
 import DefaultLayoutAd from '~/layouts/DefaultLayoutAd';
 import Admin from '~/pages/admin';
 import { Login, SignUp } from '~/pages/auth';
+import Cart from '~/pages/cart';
 import Category from '~/pages/category';
 
 import CategoryAd from '~/pages/categoryad';
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: 'category',
-                element: <CategoryAd  />,
+                element: <CategoryAd />,
                 // loader: ProductAd,
             },
             {
@@ -52,27 +53,31 @@ const router = createBrowserRouter([
             },
             {
                 path: '/iphone',
-                element: <Category title = "iPhone" />,
+                element: <Category title="iPhone" />,
             },
             {
                 path: '/ipad',
-                element: <Category title = "iPad" />,
+                element: <Category title="iPad" />,
             },
             {
                 path: '/mac',
-                element: <Category title = "MAC" />,
+                element: <Category title="MAC" />,
             },
             {
                 path: '/watch',
-                element: <Category title = "Apple Watch"/>,
+                element: <Category title="Apple Watch" />,
             },
             {
                 path: '/phu-kien',
-                element: <Category title = "Phụ kiện" />,
+                element: <Category title="Phụ kiện" />,
             },
             {
                 path: '/:category/:productCode',
                 element: <Detail />,
+            },
+            {
+                path: '/cart',
+                element: <Cart />,
             },
         ],
     },

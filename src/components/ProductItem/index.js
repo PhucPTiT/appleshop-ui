@@ -8,7 +8,7 @@ function ProductItem(data) {
     const { imgLinks, colorDTOs, name, list, categoryCode, code } = data.data || {};
     const prices = list.map((item) => item.price);
     const types = list.map((item) => item.type);
-    const imageArr = imgLinks.split(" ");
+    const imageArr = imgLinks.split(' ');
     return (
         <div className={cx('product')}>
             <div
@@ -20,7 +20,7 @@ function ProductItem(data) {
             <div className={cx('product__color')}>
                 {colorDTOs.map((color, index) => {
                     return (
-                        <div key={index} className={cx('product__color-item')} style={{backgroundColor: color.code}}>
+                        <div key={index} className={cx('product__color-item')} style={{ backgroundColor: color.code }}>
                             <span> </span>
                         </div>
                     );
@@ -43,7 +43,7 @@ function ProductItem(data) {
                 <span className={cx('price')}>{prices[0].toLocaleString('vi-VN') + ' VNĐ'}</span>
                 <strike>{Math.round(prices[0] * 1.3).toLocaleString('vi-VN') + ' VNĐ'}</strike>
             </div>
-            <Link to = {code} className={cx('btn_view')}>
+            <Link to={code} className={cx('btn_view')}>
                 <span>Xem chi tiết</span>
             </Link>
         </div>

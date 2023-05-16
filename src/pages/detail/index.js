@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Detail.module.scss';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { ProductService } from '~/service/productService';
 import { useEffect, useState } from 'react';
@@ -13,6 +13,8 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import './swipper.scss';
 import { FaMemory, FaMoneyBillWave } from 'react-icons/fa';
+import jwt_decode from 'jwt-decode';
+import { CartService } from '~/service/cartService';
 
 const cx = classNames.bind(styles);
 
@@ -22,6 +24,19 @@ function Detail() {
     const [product, setProduct] = useState([]);
     const [priceSelect, setPriceSelect] = useState(0);
     const [colorSelect, setColorSelect] = useState(0);
+    const [cart, setCart] = useState({});
+    const [check, setCheck] = useState(false);
+
+    useEffect(() => {
+        const cartService = new CartService();
+        const fetchData = async function () {
+            const res = await cartService.add(cart);
+            return res;
+        };
+        if (check) {
+            fetchData();
+        }
+    }, [cart]);
 
     useEffect(() => {
         const productService = new ProductService();
@@ -32,6 +47,7 @@ function Detail() {
         };
         fetchData();
     }, [productCode]);
+
     const { imgLinks, name, list, colorDTOs } = product;
     const imageArray = imgLinks ? imgLinks.split(' ') : '';
     const SwipperImage = () => {
@@ -55,13 +71,26 @@ function Detail() {
                         imageArray.map((item, index) => {
                             return (
                                 <SwiperSlide key={index}>
-                                    <img src={item} alt='Hình ảnh sản phẩm'/>
+                                    <img src={item} alt="Hình ảnh sản phẩm" />
                                 </SwiperSlide>
                             );
                         })}
                 </Swiper>
             </>
         );
+    };
+
+    const OnBuy = () => {
+        const token = localStorage.getItem('token');
+        const decoded = jwt_decode(token);
+        const item = {
+            userId: decoded.id,
+            productId: product.id,
+            memory: list?.[priceSelect]?.type,
+            color: colorDTOs?.[colorSelect]?.color,
+        };
+        setCart(item);
+        setCheck(true);
     };
     return (
         <div className={cx('container')}>
@@ -129,7 +158,11 @@ function Detail() {
                                 );
                             })}
                     </div>
-                    <div className={cx('btn-buynow')}>MUA NGAY</div>
+                    <Link to="/cart" style={{ textDecoration: 'none' }}>
+                        <div className={cx('btn-buynow')} onClick={() => OnBuy()}>
+                            MUA NGAY
+                        </div>
+                    </Link>
                     <div className={cx('contact')}>
                         <p>
                             Gọi <a href="tel:18006601">1800 6601</a> để được tư vấn mua hàng (Miễn phí)

@@ -14,7 +14,6 @@ const cx = classNames.bind(styles);
 
 function isMissingKey(objects, key) {
     if (!Array.isArray(objects)) {
-        console.log('vao');
         return false;
     }
     return objects.some((obj) => !(key in obj && obj[key] !== ''));

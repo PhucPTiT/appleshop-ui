@@ -17,12 +17,11 @@ export class ProductService extends ServiceBase {
         return this.post(`/product`, { name, code, description, categoryCode, list, colors, imgLinks });
     };
     viewProductByCate = async (params) => {
-        const {device} = params;
+        const { device } = params;
         return this.get(`/product/${device}`);
     };
     viewProductByCode = async (params) => {
-        const {productCode} = params;
+        const { productCode } = params;
         return this.get(`/product/code/${productCode}`);
     };
-
 }
