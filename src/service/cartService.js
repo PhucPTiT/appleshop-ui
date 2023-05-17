@@ -1,9 +1,10 @@
 const { ServiceBase } = require('~/config/service-base');
 
 export class CartService extends ServiceBase {
-    // view = async () => {
-    //     return this.get('/category');
-    // };
+    view = async (params) => {
+        const { userId } = params;
+        return this.get(`/cart/user/${userId}`);
+    };
     // edit = async (params) => {
     //     const { id, name, code } = params;
     //     return this.put(`/category/${id}`, { name, code });
