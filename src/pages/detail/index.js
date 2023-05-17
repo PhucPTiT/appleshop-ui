@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Detail.module.scss';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { ProductService } from '~/service/productService';
 import { useEffect, useState } from 'react';
@@ -20,6 +20,7 @@ const cx = classNames.bind(styles);
 
 function Detail() {
     const { productCode } = useParams();
+    const navigate = useNavigate();
 
     const [product, setProduct] = useState([]);
     const [priceSelect, setPriceSelect] = useState(0);
@@ -35,6 +36,7 @@ function Detail() {
         };
         if (check) {
             fetchData();
+            navigate('/cart');
         }
     }, [cart]);
 
@@ -158,11 +160,9 @@ function Detail() {
                                 );
                             })}
                     </div>
-                    <Link to="/cart" style={{ textDecoration: 'none' }}>
-                        <div className={cx('btn-buynow')} onClick={() => OnBuy()}>
-                            MUA NGAY
-                        </div>
-                    </Link>
+                    <div className={cx('btn-buynow')} onClick={() => OnBuy()}>
+                        MUA NGAY
+                    </div>
                     <div className={cx('contact')}>
                         <p>
                             Gọi <a href="tel:18006601">1800 6601</a> để được tư vấn mua hàng (Miễn phí)

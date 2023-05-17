@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function ProductItem(data) {
-    const { imgLinks, colorDTOs, name, list, categoryCode, code } = data.data || {};
+    const { imgLinks, colorDTOs, name, list, code } = data.data || {};
     const prices = list.map((item) => item.price);
     const types = list.map((item) => item.type);
     const imageArr = imgLinks.split(' ');
+
     return (
         <div className={cx('product')}>
             <div
