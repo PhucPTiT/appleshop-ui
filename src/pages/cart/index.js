@@ -2,8 +2,8 @@ import classNames from 'classnames/bind';
 import styles from './Cart.module.scss';
 import { Link } from 'react-router-dom';
 import data from '~/data/data.json';
-import { useEffect, useState } from 'react';
-import { FaAngleLeft, FaMinus, FaPlus } from 'react-icons/fa';
+import { useEffect, useMemo, useState } from 'react';
+import { FaAngleLeft } from 'react-icons/fa';
 import jwt_decode from 'jwt-decode';
 import { CartService } from '~/service/cartService';
 import ProductCartItem from '~/components/ProductCartItem';
@@ -31,7 +31,6 @@ function Cart() {
     const decode = jwt_decode(token);
     const userId = decode.id;
     const [items, setItems] = useState([]);
-
     useEffect(() => {
         const cartService = new CartService();
         const fetchData = async function () {
@@ -41,11 +40,21 @@ function Cart() {
         };
         fetchData();
     }, []);
-
-    // click button -
-    // const hanldleClickMinus = (value) {
-
-    // }
+    const priceAll = useMemo(() => {
+        let sum = 0;
+        items &&
+            items.map((item, index) => {
+                const { productDTO, memory, quantity } = item;
+                const price = productDTO.list.find((item) => item.type === memory).price;
+                return (sum += price * quantity);
+            });
+        return sum;
+    }, [items]);
+    const ChangeItemsList = (index, quantity) => {
+        let copyItems = JSON.parse(JSON.stringify(items));
+        copyItems[index]['quantity'] = quantity;
+        setItems(copyItems);
+    };
     return (
         <div className={cx('container')}>
             <div className={cx('return')}>
@@ -53,26 +62,28 @@ function Cart() {
                 <Link to="/">Tiếp tục mua hàng</Link>
             </div>
             <div className={cx('cart')}>
-                <div className={cx('count')}>Có một sản phẩm trong giỏ hàng</div>
+                <div className={cx('count')}>Có {items.length} sản phẩm trong giỏ hàng</div>
                 <div className={cx('product-list')}>
                     {items &&
                         items.map((item, index) => {
-                            return <ProductCartItem props={item} key={index} />;
+                            return (
+                                <ProductCartItem props={item} key={index} setItems={ChangeItemsList} index={index} />
+                            );
                         })}
                 </div>
                 <div className={cx('totalprice')}>
                     <div className={cx('wrap')}>
                         <div className={cx('totalprice-row')}>
                             <span>Tổng tiền</span>
-                            <span>618.900.000</span>
+                            <span>{(priceAll * 1.2).toLocaleString('vi-VN') + 'đ'}</span>
                         </div>
                         <div className={cx('totalprice-row')}>
                             <span>Giảm: </span>
-                            <span> -13.760.000</span>
+                            <span>-{(priceAll * 0.25).toLocaleString('vi-VN') + 'đ'}</span>
                         </div>
                         <div className={cx('totalprice-row')}>
                             <strong>Cần thanh toán</strong>
-                            <span className={cx('text-price-l')}>48.220.000đ</span>
+                            <span className={cx('text-price-l')}>{priceAll.toLocaleString('vi-VN') + 'đ'}</span>
                         </div>
                     </div>
                 </div>

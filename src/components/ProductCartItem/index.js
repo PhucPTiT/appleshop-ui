@@ -1,11 +1,12 @@
 import classNames from 'classnames/bind';
 import styles from './ProductCartItem.module.scss';
-import { FaMinus, FaPlus } from 'react-icons/fa';
+import { FaMinus, FaPlus, FaTrash } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 function ProductCartItem(props) {
+    const { setItems, index } = props;
     const { productDTO, color, quantity, memory } = props.props;
     const { colorDTOs, imgLinks, list } = productDTO;
     const link = imgLinks.split(' ');
@@ -17,6 +18,10 @@ function ProductCartItem(props) {
     useEffect(() => {
         setPriceItem(quantityItem * priceReal);
     }, [quantityItem, priceReal]);
+
+    useEffect(() => {
+        setItems(index, quantityItem);
+    }, [quantityItem]);
 
     const handleClickMinus = () => {
         if (quantityItem - 1 === 0) {
@@ -46,13 +51,18 @@ function ProductCartItem(props) {
                 </select>
             </div>
             <div className={cx('quantity')}>
-                <FaMinus onClick={() => handleClickMinus()} />
-                <div>{quantityItem}</div>
-                <FaPlus onClick={() => handleClickPlus()} />
+                <div className={cx('adjust')}>
+                    <FaMinus onClick={() => handleClickMinus()} />
+                    <div>{quantityItem}</div>
+                    <FaPlus onClick={() => handleClickPlus()} />
+                </div>
+                <div className={cx('remove')}>
+                    <FaTrash /> Xóa
+                </div>
             </div>
             <div className={cx('price')}>
-                <div className={cx('real')}>{(priceItem * quantity).toLocaleString('vi-VN') + 'đ'}</div>
-                <strike>{Math.floor(priceItem * 1.2 * quantity).toLocaleString('vi-VN') + 'đ'}</strike>
+                <div className={cx('real')}>{priceItem.toLocaleString('vi-VN') + 'đ'}</div>
+                <strike>{Math.floor(priceItem * 1.2).toLocaleString('vi-VN') + 'đ'}</strike>
             </div>
         </div>
     );
