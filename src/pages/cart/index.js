@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import styles from './Cart.module.scss';
 import { Link } from 'react-router-dom';
 import data from '~/data/data.json';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FaAngleLeft } from 'react-icons/fa';
 import jwt_decode from 'jwt-decode';
 import { CartService } from '~/service/cartService';
@@ -14,6 +14,7 @@ function Cart() {
     const [province, setProvince] = useState('');
     const [district, setDistrict] = useState('');
     const [ward, setWard] = useState('');
+    const [checkRemove, setCheckRemove] = useState(false);
     const handleChageProvince = (e) => {
         setDistrict('');
         setWard('');
@@ -31,19 +32,27 @@ function Cart() {
     const decode = jwt_decode(token);
     const userId = decode.id;
     const [items, setItems] = useState([]);
+
+    const onRemove = () => {
+        setCheckRemove(!checkRemove);
+    };
+
     useEffect(() => {
         const cartService = new CartService();
+
         const fetchData = async function () {
             const res = await cartService.view({ userId });
             setItems(res);
             return res;
         };
+
         fetchData();
-    }, []);
+    }, [checkRemove]);
+
     const priceAll = useMemo(() => {
         let sum = 0;
         items &&
-            items.map((item, index) => {
+            items.map((item) => {
                 const { productDTO, memory, quantity } = item;
                 const price = productDTO.list.find((item) => item.type === memory).price;
                 return (sum += price * quantity);
@@ -67,7 +76,14 @@ function Cart() {
                     {items &&
                         items.map((item, index) => {
                             return (
-                                <ProductCartItem props={item} key={index} setItems={ChangeItemsList} index={index} />
+                                <ProductCartItem
+                                    props={item}
+                                    key={index}
+                                    setItems={ChangeItemsList}
+                                    index={index}
+                                    id={item.id}
+                                    onRemove={onRemove}
+                                />
                             );
                         })}
                 </div>
@@ -79,7 +95,7 @@ function Cart() {
                         </div>
                         <div className={cx('totalprice-row')}>
                             <span>Giảm: </span>
-                            <span>-{(priceAll * 0.25).toLocaleString('vi-VN') + 'đ'}</span>
+                            <span>-{(priceAll * 0.2).toLocaleString('vi-VN') + 'đ'}</span>
                         </div>
                         <div className={cx('totalprice-row')}>
                             <strong>Cần thanh toán</strong>

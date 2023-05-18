@@ -2,11 +2,12 @@ import classNames from 'classnames/bind';
 import styles from './ProductCartItem.module.scss';
 import { FaMinus, FaPlus, FaTrash } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
+import { CartService } from '~/service/cartService';
 
 const cx = classNames.bind(styles);
 
 function ProductCartItem(props) {
-    const { setItems, index } = props;
+    const { setItems, index, id, onRemove } = props;
     const { productDTO, color, quantity, memory } = props.props;
     const { colorDTOs, imgLinks, list } = productDTO;
     const link = imgLinks.split(' ');
@@ -21,7 +22,7 @@ function ProductCartItem(props) {
 
     useEffect(() => {
         setItems(index, quantityItem);
-    }, [quantityItem]);
+    }, [quantityItem, index]);
 
     const handleClickMinus = () => {
         if (quantityItem - 1 === 0) {
@@ -32,6 +33,14 @@ function ProductCartItem(props) {
     };
     const handleClickPlus = () => {
         setQuantityItem(quantityItem + 1);
+    };
+
+    const cartService = new CartService();
+    const onDelete = async () => {
+        try {
+            await cartService.remove(id);
+            onRemove();
+        } catch (error) {}
     };
     return (
         <div className={cx('item')}>
@@ -56,7 +65,7 @@ function ProductCartItem(props) {
                     <div>{quantityItem}</div>
                     <FaPlus onClick={() => handleClickPlus()} />
                 </div>
-                <div className={cx('remove')}>
+                <div className={cx('remove')} onClick={() => onDelete()}>
                     <FaTrash /> Xóa
                 </div>
             </div>

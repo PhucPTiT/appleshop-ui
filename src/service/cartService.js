@@ -5,14 +5,10 @@ export class CartService extends ServiceBase {
         const { userId } = params;
         return this.get(`/cart/user/${userId}`);
     };
-    // edit = async (params) => {
-    //     const { id, name, code } = params;
-    //     return this.put(`/category/${id}`, { name, code });
-    // };
-    // remove = async (params) => {
-    //     const id = params.id;
-    //     return this.delete(`/category/${id}`);
-    // };
+    remove = async (params) => {
+        const id = params;
+        return this.delete(`/cart/${id}`);
+    };
     add = async (params) => {
         const { userId, productId, memory, color } = params;
         return this.post(`/cart`, { userId, productId, memory, color });

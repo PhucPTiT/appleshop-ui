@@ -35,8 +35,7 @@ function Detail() {
             return res;
         };
         if (check) {
-            fetchData();
-            navigate('/cart');
+            fetchData().then(() => navigate('/cart'));
         }
     }, [cart]);
 
