@@ -11,6 +11,7 @@ import ColorAd from '~/pages/colorAd';
 import Detail from '~/pages/detail';
 import Home from '~/pages/home';
 import MemoryAd from '~/pages/memoryad';
+import Order from '~/pages/order';
 import ProductAd from '~/pages/productad';
 
 const router = createBrowserRouter([
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
             {
                 path: '/cart',
                 element: <Cart />,
+            },
+            {
+                path: '/order',
+                element: <Order />,
             },
         ],
     },

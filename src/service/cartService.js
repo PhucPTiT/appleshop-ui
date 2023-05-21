@@ -13,4 +13,8 @@ export class CartService extends ServiceBase {
         const { userId, productId, memory, color } = params;
         return this.post(`/cart`, { userId, productId, memory, color });
     };
+    removeAll = async (params) => {
+        const id = params;
+        return this.delete(`/cart/user/${id}`);
+    };
 }

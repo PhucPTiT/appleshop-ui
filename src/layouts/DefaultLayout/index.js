@@ -1,6 +1,6 @@
 import Header from './Header';
 import styles from './DefaultLayout.module.scss';
-import classNames from 'classnames';
+import classNames from 'classnames/bind';
 import Footer from './Footer';
 import { Outlet } from 'react-router-dom';
 
@@ -10,7 +10,9 @@ function DefaultLayout() {
     return (
         <div className={cx('defaultLayout')}>
             <Header />
-            <Outlet />
+            <div className={cx('flex1')}>
+                <Outlet />
+            </div>
             <Footer />
         </div>
     );

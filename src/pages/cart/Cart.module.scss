@@ -1,6 +1,8 @@
 @import '../../components/GlobalStyles/variables';
+
 .container {
-    max-width: 776px;
+    max-width: 1176px;
+    width: 100%;
     margin: 0 auto;
 }
 .return {
@@ -8,7 +10,9 @@
     display: flex;
     align-items: center;
     color: $blue-eye;
+    width: 100%;
     a {
+        max-width: 120px;
         color: $blue-eye;
         cursor: pointer;
         text-decoration: none;
@@ -149,5 +153,22 @@
                 margin-top: 4px;
             }
         }
+    }
+}
+.errors {
+    font-size: 10px;
+    color: red;
+}
+.no-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+        max-width: 300px;
+        width: 100%;
+    }
+    p {
+        font-weight: 500;
+        font-size: 18px;
     }
 }

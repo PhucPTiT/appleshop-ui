@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaSistrix, FaUser, FaShoppingCart, FaPhoneAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaSistrix, FaUser, FaShoppingCart, FaPhoneAlt, FaSignOutAlt, FaBarcode } from 'react-icons/fa';
 import Tippy from '@tippyjs/react/headless';
 import jwt_decode from 'jwt-decode';
 
@@ -51,6 +51,10 @@ function Header() {
                         <div className={cx('name')}>{name}</div>
                         <div className={cx('username')}>{username}</div>
                     </div>
+                    <Link to="./order" className={cx('order', 'item')}>
+                        <FaBarcode />
+                        <div className={cx('view')}>Xem hóa đơn mua hàng</div>
+                    </Link>
                     <div className={cx('sign-out', 'item')} onClick={handleSignOut}>
                         <FaSignOutAlt className={cx('icon')} />
                         Đăng Xuất

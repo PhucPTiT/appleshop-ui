@@ -116,7 +116,7 @@
     }
 }
 .infor {
-    background-color: #fff;
+    background-color: $gray-500;
     border-radius: 4px;
     padding: 4px 8px;
     .wrap-infor {
@@ -129,6 +129,17 @@
         }
         margin-bottom: 4px;
         border-bottom: 1px solid $gray-400;
+    }
+    .order {
+        margin-bottom: 4px;
+        border-bottom: 1px solid $gray-400;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        justify-content: center;
+        color: $text-color;
+        text-decoration: none;
+        font-size: 14px;
     }
     .sign-out {
         display: flex;

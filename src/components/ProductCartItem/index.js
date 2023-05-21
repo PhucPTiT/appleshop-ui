@@ -15,14 +15,15 @@ function ProductCartItem(props) {
 
     const [quantityItem, setQuantityItem] = useState(quantity);
     const [priceItem, setPriceItem] = useState(quantity * priceReal);
+    const [colorSelect, setColorSelect] = useState(color);
 
     useEffect(() => {
         setPriceItem(quantityItem * priceReal);
     }, [quantityItem, priceReal]);
 
     useEffect(() => {
-        setItems(index, quantityItem);
-    }, [quantityItem, index]);
+        setItems(index, quantityItem, colorSelect);
+    }, [quantityItem, index, colorSelect]);
 
     const handleClickMinus = () => {
         if (quantityItem - 1 === 0) {
@@ -42,6 +43,9 @@ function ProductCartItem(props) {
             onRemove();
         } catch (error) {}
     };
+    const handleColorChange = (e) => {
+        setColorSelect(e.target.value);
+    };
     return (
         <div className={cx('item')}>
             <img className={cx('image')} src={link[0]} alt="Hình ảnh của sản phẩm" />
@@ -49,7 +53,7 @@ function ProductCartItem(props) {
                 <div className={cx('name')}>
                     {productDTO.name} {memory}
                 </div>
-                <select className={cx('color')} defaultValue={color}>
+                <select className={cx('color')} defaultValue={color} onChange={(e) => handleColorChange(e)}>
                     {colorDTOs.map((color, index) => {
                         return (
                             <option value={color.color} key={index}>
