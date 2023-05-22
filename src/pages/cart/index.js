@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Cart.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import data from '~/data/data.json';
 import { useEffect, useMemo, useState } from 'react';
 import { FaAngleLeft } from 'react-icons/fa';
@@ -13,10 +13,10 @@ import * as yup from 'yup';
 import { OrderService } from '~/service/orderService';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-
 const cx = classNames.bind(styles);
 
 function Cart() {
+    const navigate = useNavigate();
     const [province, setProvince] = useState('');
     const [district, setDistrict] = useState('');
     const [ward, setWard] = useState('');
@@ -117,7 +117,7 @@ function Cart() {
             await cartService.removeAll(userId);
             toast.success('Đặt hàng thành công', {
                 position: 'top-right',
-                autoClose: 3000,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -126,6 +126,9 @@ function Cart() {
                 theme: 'dark',
             });
             setItems([]);
+            setTimeout(() => {
+                navigate('/order', { state: true });
+            }, 2000);
         } catch {}
     };
     return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaSistrix, FaUser, FaShoppingCart, FaPhoneAlt, FaSignOutAlt, FaBarcode } from 'react-icons/fa';
+import { FaUser, FaShoppingCart, FaPhoneAlt, FaSignOutAlt, FaBarcode } from 'react-icons/fa';
 import Tippy from '@tippyjs/react/headless';
 import jwt_decode from 'jwt-decode';
 
@@ -7,6 +7,7 @@ import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Button from '~/components/Button';
+import Search from '~/components/Search';
 
 const cx = classNames.bind(styles);
 
@@ -25,6 +26,7 @@ const navigation = listNav.map((item, index) => {
         </NavLink>
     );
 });
+
 function Header() {
     const navigate = useNavigate();
     const handleSignOut = () => {
@@ -73,10 +75,7 @@ function Header() {
                             <p>Studio</p>
                             <img src={require('~/assets/image/copyright_logo.png')} alt={'myimage'} />
                         </Link>
-                        <div className={cx('search')}>
-                            <FaSistrix />
-                            <input type="text" placeholder="Bạn đang tìm kiếm sản phẩm" />
-                        </div>
+                        <Search />
                         {!token && (
                             <div className={cx('btn-login')}>
                                 <Link to="/login">
@@ -98,6 +97,7 @@ function Header() {
                                                 <MenuInforUser />
                                             </div>
                                         )}
+                                        onClickOutside={() => setVisible(!visible)}
                                     >
                                         <div className={cx('account')}>
                                             <FaUser size="24px" color="#fff" onClick={handleClickUserIcon} />

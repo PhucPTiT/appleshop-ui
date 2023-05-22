@@ -1,0 +1,108 @@
+@import '../../components/GlobalStyles/variables';
+
+.container {
+    margin: 0 auto;
+    max-width: 1176px;
+}
+.order {
+    display: flex;
+    flex-direction: column;
+    .head {
+        padding: 8px 24px;
+        color: $gray-800;
+        font-weight: 600;
+        background-color: $gray-100;
+    }
+    .thank {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        img {
+            width: 106px;
+        }
+        .talk {
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 24px;
+        }
+        .tel {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 20px;
+            a {
+                color: $gray-800;
+                text-decoration: none;
+                margin-left: 4px;
+                font-weight: 600;
+                font-size: 16px;
+            }
+        }
+    }
+    .infor {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .item {
+            display: flex;
+            flex-direction: column;
+            margin: 12px 0 64px;
+            width: 80%;
+            .person {
+                tr {
+                    width: 100%;
+                    box-shadow: inset 0px 1px 0px #e9ecef;
+                    th {
+                        text-align: left;
+                        width: 320px;
+                    }
+                    th,
+                    td {
+                        padding: 4px 8px;
+                    }
+                }
+            }
+            .text-detail {
+                padding: 4px 8px;
+                background-color: $gray-100;
+                text-align: center;
+                font-weight: 600;
+            }
+            .products {
+                .product {
+                    .detail {
+                        display: flex;
+                        align-items: center;
+                        img {
+                            max-width: 120px;
+                        }
+                    }
+                    td {
+                        text-align: center;
+                        padding: 4px 8px;
+                    }
+                    .money {
+                        font-weight: 600;
+                        color: $red-delete;
+                        font-size: 16px;
+                    }
+                }
+                .footer {
+                    .total_price {
+                        padding: 4px 8px;
+                        color: $red-delete;
+                        font-size: 20px;
+                        font-weight: 600;
+                    }
+                    .status {
+                        div {
+                            color: $green-ship;
+                            display: flex;
+                            gap: 4px;
+                            align-items: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+@import '../GlobalStyles/variables';
+
+.wrap {
+    max-width: 476px;
+    width: 100%;
+}
+.search {
+    width: 100%;
+    background-color: $white-15;
+    display: flex;
+    align-items: center;
+    padding: 8px 6px;
+    border-radius: 4px;
+    height: 28px;
+    input {
+        padding-left: 4px;
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: $gray500;
+    }
+}
