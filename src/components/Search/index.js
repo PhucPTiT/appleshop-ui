@@ -8,6 +8,11 @@ import Tippy from '@tippyjs/react/headless';
 const cx = classNames.bind(styles);
 
 function Search() {
+    const [visible, setVisible] = useState();
+    const handleClickSearch = () => {
+        setVisible(true);
+    };
+
     const [products, setProducts] = useState();
     useEffect(() => {
         const productService = new ProductService();
@@ -23,18 +28,18 @@ function Search() {
         <div className={cx('wrap')}>
             <Tippy
                 interactive
-                // visible={visible}
+                visible={visible}
                 placement={'bottom'}
                 render={(attrs) => (
                     <div className={cx('infor')} tabIndex="-1" {...attrs}>
                         Đây là kết quả tìm kiếm
                     </div>
                 )}
-                // onClickOutside={() => setVisible(!visible)}
+                onClickOutside={() => setVisible(!visible)}
             >
                 <div className={cx('search')}>
                     <FaSistrix />
-                    <input type="text" placeholder="Bạn đang tìm kiếm sản phẩm" />
+                    <input onInput={() => handleClickSearch()} type="text" placeholder="Bạn đang tìm kiếm sản phẩm" />
                 </div>
             </Tippy>
         </div>

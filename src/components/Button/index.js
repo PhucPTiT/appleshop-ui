@@ -1,5 +1,5 @@
 function Button(props) {
-    const { type, size, color, children, onclick, text, disabled } = props;
+    const { type, size, color, children, onclick, text } = props;
 
     const styles = {
         fontSize: size === 'large' ? '24px' : '16px',
