@@ -3,15 +3,17 @@
 .container {
     margin: 0 auto;
     max-width: 1176px;
+    background-color: $gray-200;
 }
 .order {
     display: flex;
     flex-direction: column;
+
     .head {
         padding: 8px 24px;
         color: $gray-800;
         font-weight: 600;
-        background-color: $gray-100;
+        background-color: $gray-300;
     }
     .thank {
         display: flex;
@@ -43,10 +45,15 @@
         flex-direction: column;
         align-items: center;
         .item {
+            transform: scale(1);
+            transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
-            margin: 12px 0 64px;
+            margin: 24px;
+            padding: 48px 0;
             width: 80%;
+            background-color: #fff;
+            border-radius: 8px;
             .person {
                 tr {
                     width: 100%;
@@ -63,11 +70,14 @@
             }
             .text-detail {
                 padding: 4px 8px;
-                background-color: $gray-100;
                 text-align: center;
                 font-weight: 600;
             }
             .products {
+                .headerTable {
+                    background-color: $gray-100;
+                    color: $gray-800;
+                }
                 .product {
                     .detail {
                         display: flex;
@@ -94,6 +104,7 @@
                         font-weight: 600;
                     }
                     .status {
+                        margin: 0 8px;
                         div {
                             color: $green-ship;
                             display: flex;
@@ -105,4 +116,9 @@
             }
         }
     }
+}
+
+.note {
+    background-color: $gray-300 !important;
+    transform: scale(1.05) !important;
 }

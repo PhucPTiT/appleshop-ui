@@ -7,47 +7,43 @@ import { useEffect, useState } from 'react';
 const cx = classNames.bind(styles);
 
 function Category(props) {
-    const {title} = props;
+    const { title } = props;
 
     let device;
-    switch(title) {
+    switch (title) {
         case 'iPhone':
-            device = 'iphone'
+            device = 'iphone';
             break;
         case 'iPad':
-            device = 'ipad'
+            device = 'ipad';
             break;
         case 'MAC':
-            device = 'macbook'
+            device = 'macbook';
             break;
         case 'Apple Watch':
-            device = 'applewatch'
+            device = 'applewatch';
             break;
         case 'Phụ kiện':
-            device = 'phu-kien'
+            device = 'phu-kien';
             break;
         default:
             break;
     }
-    
-    const [products, setProducts] = useState([])
+
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
         const productService = new ProductService();
         const fetchData = async function () {
-            const res = await productService.viewProductByCate({device});
+            const res = await productService.viewProductByCate({ device });
             setProducts(res);
         };
         fetchData();
     }, [device]);
 
     const listProduct = products.map((product, index) => {
-        return(
-            <div key = {index}>
-                <ProductItem data = {product}/>
-            </div>
-        )
-    })
+        return <ProductItem data={product} key={index} />;
+    });
 
     return (
         <div className={cx('container')}>
@@ -55,9 +51,7 @@ function Category(props) {
                 <div className={cx('title')}>
                     <span>{title}</span>
                 </div>
-                <div className={cx('list-item')}>
-                    {listProduct}
-                </div>
+                <div className={cx('list-item')}>{listProduct}</div>
             </div>
         </div>
     );

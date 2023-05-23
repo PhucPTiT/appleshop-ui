@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 const BannerIphone14pro = () => {
     return (
         <div className={cx('unit-link')}>
-            <Link to="/">
+            <Link to="/iphone/iPhone%2014%20Pro">
                 <span className={cx('name')}>iPhone 14 Pro</span>
                 <span className={cx('desc')}>by Apple U.S.A</span>
             </Link>
@@ -20,7 +20,7 @@ const BannerIphone14pro = () => {
 const Bannerphone14 = () => {
     return (
         <div className={cx('unit-link-2')}>
-            <Link to="/">
+            <Link to="/iphone/iphone14">
                 <span className={cx('name')}>iPhone 14</span>
                 <span className={cx('desc')}>Kích thước tuyệt vời - Màu sắc đa dạng</span>
             </Link>
@@ -53,27 +53,27 @@ function Home() {
             <BannerIphone14pro />
             <Bannerphone14 />
             <div className={cx('banner-watch')}>
-                <Link to="/">
+                <Link to="/watch">
                     <span className={cx('name')}>Apple Watch</span>
                     <span className={cx('desc')}>Bước nhảy vọt cho sức khỏe</span>
                 </Link>
             </div>
             <div className={cx('module-content')}>
                 <div className={cx('banner-mac')}>
-                    <Link to="/">
+                    <Link to="/mac">
                         <span className={cx('name')}>MacBook Pro</span>
                         <span className={cx('desc')}>Tăng năng suất làm việc</span>
                     </Link>
                 </div>
                 <div className={cx('banner-ipad')}>
-                    <Link to="/">
+                    <Link to="/ipad">
                         <span className={cx('name')}>iPad</span>
                         <span className={cx('desc')}>Sành điệu. Sáng tạo. Năng động</span>
                     </Link>
                 </div>
             </div>
             <div className={cx('accessory')}>
-                <Link to="/" className={cx('wrap-container')} ref={containerRef}>
+                <Link to="/phu-kien" className={cx('wrap-container')} ref={containerRef}>
                     <div className={cx('content')}>
                         <span className={cx('name')}>Phụ kiện</span>
                         <span className={cx('desc')}>Khám phá và tìm kiếm những thứ tốt nhất cho bạn</span>

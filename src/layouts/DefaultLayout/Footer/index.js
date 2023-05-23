@@ -83,19 +83,19 @@ function Footer() {
                                 <div className={cx('title')}>Sản phẩm</div>
                                 <ul>
                                     <li>
-                                        <Link to="/">Iphone</Link>
+                                        <Link to="/iphone">Iphone</Link>
                                     </li>
                                     <li>
-                                        <Link to="/">Ipad</Link>
+                                        <Link to="/ipad">Ipad</Link>
                                     </li>
                                     <li>
-                                        <Link to="/">Mac</Link>
+                                        <Link to="/mac">Mac</Link>
                                     </li>
                                     <li>
-                                        <Link to="/">Apple Watch</Link>
+                                        <Link to="/watch">Apple Watch</Link>
                                     </li>
                                     <li>
-                                        <Link to="/">Phụ Kiện</Link>
+                                        <Link to="/phu-kien">Phụ Kiện</Link>
                                     </li>
                                 </ul>
                             </div>

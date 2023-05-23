@@ -114,13 +114,13 @@ function ProductAd() {
         return (
             <tr key={index}>
                 <td>{id}</td>
-                <td>{name}</td>
-                <td>{code}</td>
-                <td>{description}</td>
-                <td>{thImage}</td>
+                <td className={cx('name')}>{name}</td>
+                <td className={cx('code')}>{code}</td>
+                <td className={cx('description')}>{description}</td>
+                <td className={cx('image_link')}>{thImage}</td>
                 <td>{thList}</td>
-                <td>{thColor}</td>
-                <td>{categoryDTO.name}</td>
+                <td className={cx('color')}>{thColor}</td>
+                <td className={cx('category')}>{categoryDTO.name}</td>
                 <td>
                     <Action edit={() => handleOpenEditPopup(product)} remove={() => handleOpenPopupDelete(product)} />
                 </td>
@@ -160,15 +160,15 @@ function ProductAd() {
                     <table className={cx('table-product')}>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Code</th>
-                                <th>Description</th>
-                                <th>Image Links</th>
-                                <th>Memory - Price</th>
-                                <th>Color</th>
-                                <th>Category</th>
-                                <th>Action</th>
+                                <th className={cx('id')}>ID</th>
+                                <th className={cx('name')}>Name</th>
+                                <th className={cx('code')}>Code</th>
+                                <th className={cx('description')}>Description</th>
+                                <th className={cx('image_link')}>Image Links</th>
+                                <th className={cx('memrory_price')}>Memory - Price</th>
+                                <th className={cx('color')}>Color</th>
+                                <th className={cx('category')}>Category</th>
+                                <th className={cx('action')}>Action</th>
                             </tr>
                         </thead>
                         <tbody>{productsTb}</tbody>

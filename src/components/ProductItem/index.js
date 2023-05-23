@@ -44,7 +44,8 @@ function ProductItem(data) {
                 <span className={cx('price')}>{prices[0].toLocaleString('vi-VN') + ' VNĐ'}</span>
                 <strike>{Math.round(prices[0] * 1.3).toLocaleString('vi-VN') + ' VNĐ'}</strike>
             </div>
-            <Link to={code} className={cx('btn_view')}>
+
+            <Link to={encodeURIComponent(code)} className={cx('btn_view')}>
                 <span>Xem chi tiết</span>
             </Link>
         </div>

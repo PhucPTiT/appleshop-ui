@@ -1,22 +1,22 @@
 import classNames from 'classnames/bind';
 import styles from './Order.module.scss';
 import { OrderService } from '~/service/orderService';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import Button from '~/components/Button';
 import { FaShippingFast } from 'react-icons/fa';
-// import { useLocation } from 'react-router-dom';
-// import { scroller } from 'react-scroll';
+import { useLocation } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 function Order() {
-    // const location = useLocation();
-    // const isScroll = location.state;
+    const location = useLocation();
+    const isScroll = location.state;
     const token = localStorage.getItem('token');
     const decode = jwt_decode(token);
     const userId = decode.id;
     const [orders, setOrders] = useState();
     const [isLoading, setIsLoading] = useState(false);
+    const scrollRef = useRef(null);
     useEffect(() => {
         const orderService = new OrderService();
         const fetchData = async function () {
@@ -28,17 +28,16 @@ function Order() {
         fetchData();
     }, [userId, isLoading]);
 
-    // useEffect(() => {
-    //     if (isScroll) {
-    //         // Cuộn xuống phía dưới cùng
-    //         scroller.scrollTo('bottom', {
-    //             duration: 500,
-    //             delay: 100,
-    //             smooth: true,
-    //         });
-    //     }
-    // }, [isScroll]);
-
+    useEffect(() => {
+        if (isScroll && scrollRef.current) {
+            scrollRef.current.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+            const note = cx('note');
+            scrollRef.current.classList.add(note);
+            setTimeout(() => {
+                scrollRef.current.classList.remove(note);
+            }, 1200);
+        }
+    }, [orders, isScroll]);
     return (
         <div className={cx('container')}>
             <div className={cx('order')}>
@@ -80,8 +79,10 @@ function Order() {
                             };
                             const orderTime = new Date(order.orderTime);
                             const formattedDate = orderTime.toLocaleString();
+                            const isLastItem = index === orders.length - 1;
+
                             return (
-                                <div className={cx('item')} key={index}>
+                                <div className={cx('item')} key={index} ref={isLastItem ? scrollRef : null}>
                                     <table className={cx('person')}>
                                         <tbody>
                                             <tr>
@@ -125,7 +126,7 @@ function Order() {
                                     <p className={cx('text-detail')}>Chi tiết đơn hàng</p>
                                     <table className={cx('products')}>
                                         <tbody>
-                                            <tr>
+                                            <tr className={cx('headerTable')}>
                                                 <th>Thông tin đơn hàng</th>
                                                 <th>Số lượng</th>
                                                 <th>Thành tiền</th>
@@ -167,7 +168,7 @@ function Order() {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <span>Thành tiền: </span>
+                                                    <span>Tổng: </span>
                                                     <span className={cx('total_price')}>
                                                         {totalPrice.toLocaleString('vi-VN') + 'đ'}
                                                     </span>
@@ -180,7 +181,6 @@ function Order() {
                         })}
                 </div>
             </div>
-            <div id="bottom">Test</div>
         </div>
     );
 }

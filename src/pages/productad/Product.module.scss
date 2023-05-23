@@ -38,11 +38,27 @@
                     color: #000;
                 }
                 tr {
-                    th:nth-child(3) {
-                        text-align: center;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
+                    .name,
+                    .code,
+                    .color,
+                    .category {
+                        max-width: 80px;
+                    }
+                    .description {
+                        max-width: 200px;
+                    }
+                    .image_link {
+                        .thimage {
+                            display: flex;
+                            flex-direction: column;
+                            max-width: 200px;
+                            p {
+                                width: 100%;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
+                        }
                     }
                 }
             }

@@ -11,8 +11,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { OrderService } from '~/service/orderService';
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+
 const cx = classNames.bind(styles);
 
 function Cart() {
@@ -115,25 +114,12 @@ function Cart() {
         try {
             await orderService.add(params);
             await cartService.removeAll(userId);
-            toast.success('Đặt hàng thành công', {
-                position: 'top-right',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'dark',
-            });
             setItems([]);
-            setTimeout(() => {
-                navigate('/order', { state: true });
-            }, 2000);
+            navigate('/order', { state: true });
         } catch {}
     };
     return (
         <div className={cx('container')}>
-            <ToastContainer />
             <div className={cx('return')}>
                 <FaAngleLeft />
                 <Link to="/">Tiếp tục mua hàng</Link>
