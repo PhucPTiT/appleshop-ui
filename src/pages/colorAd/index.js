@@ -47,6 +47,7 @@ function ColorAd() {
             <tr key={index}>
                 <th>{color.id}</th>
                 <th>{color.color}</th>
+                <th>{color.code}</th>
                 <th>
                     <Action edit={() => handleOpenPopup(color)} remove={() => handleOpenPopupDelete(color)} />
                 </th>
@@ -74,6 +75,7 @@ function ColorAd() {
                             <tr>
                                 <th>id</th>
                                 <th>Color</th>
+                                <th>Code</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

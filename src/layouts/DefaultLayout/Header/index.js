@@ -49,10 +49,10 @@ function Header() {
             const { username, name } = decoded;
             return (
                 <div>
-                    <div className={cx('wrap-infor', 'item')}>
+                    <Link to="/user" className={cx('wrap-infor', 'item')}>
                         <div className={cx('name')}>{name}</div>
                         <div className={cx('username')}>{username}</div>
-                    </div>
+                    </Link>
                     <Link to="./order" className={cx('order', 'item')}>
                         <FaBarcode />
                         <div className={cx('view')}>Xem hóa đơn mua hàng</div>

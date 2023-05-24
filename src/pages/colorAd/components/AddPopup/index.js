@@ -16,6 +16,7 @@ function AddPopup(props) {
 
     const schema = yup.object().shape({
         color: yup.string().required('Hãy nhập thêm màu sản phẩm'),
+        code: yup.string().required('Hãy nhập mã màu sản phẩm'),
     });
     const {
         register,
@@ -23,14 +24,23 @@ function AddPopup(props) {
         // formState: { errors },
     } = useForm({ resolver: yupResolver(schema) });
 
-    const field = {
-        type: 'text',
-        name: 'color',
-        placeholder: 'Hãy thêm màu sản phẩm',
-    };
+    const fields = [
+        {
+            type: 'text',
+            name: 'color',
+            placeholder: 'Hãy thêm màu sản phẩm',
+        },
+        {
+            type: 'text',
+            name: 'code',
+            placeholder: 'Hãy thêm mã màu sản phẩm',
+        },
+    ];
 
     const InputField = () => {
-        return <FormGroup field={field} register={register} />;
+        return fields.map((field, index) => {
+            return <FormGroup field={field} register={register} key={index} />;
+        });
     };
 
     const handleClick = (e) => {

@@ -1,9 +1,11 @@
 @import '../../components/GlobalStyles/variables';
 
+.body {
+    background-color: $gray-200;
+}
 .container {
     margin: 0 auto;
     max-width: 1176px;
-    background-color: $gray-200;
 }
 .order {
     display: flex;

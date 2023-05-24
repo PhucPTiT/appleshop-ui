@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './HeaderAd.module.scss';
-import { FaBars, FaSearch, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { FaBars, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import SearchAd from '~/components/SearchAd';
 import Tippy from '@tippyjs/react/headless';
 import { useEffect, useState } from 'react';
@@ -28,7 +28,7 @@ function HeaderAd(props) {
     const MenuInforUser = () => {
         if (token) {
             const decoded = jwt_decode(token);
-            const { username, name } = decoded;
+            const { username } = decoded;
             return (
                 <div className={cx('infor')}>
                     <div className={cx('wrap-infor', 'item')}>

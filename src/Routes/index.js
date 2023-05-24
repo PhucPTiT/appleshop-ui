@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import DefaultLayout from '~/layouts/DefaultLayout';
 import DefaultLayoutAd from '~/layouts/DefaultLayoutAd';
+import User from '~/pages/User';
 import Admin from '~/pages/admin';
 import { Login, SignUp } from '~/pages/auth';
 import Cart from '~/pages/cart';
@@ -84,6 +85,7 @@ const router = createBrowserRouter([
                 path: '/order',
                 element: <Order />,
             },
+            { path: '/user', element: <User /> },
         ],
     },
 ]);

@@ -5,15 +5,15 @@ export class ColorService extends ServiceBase {
         return this.get('/color');
     };
     edit = async (params) => {
-        const { id, color } = params;
-        return this.put(`/color/${id}`, { color });
+        const { id, color, code } = params;
+        return this.put(`/color/${id}`, { color, code });
     };
     remove = async (params) => {
         const id = params.id;
         return this.delete(`/color/${id}`);
     };
     add = async (params) => {
-        const { color } = params;
-        return this.post(`/color`, { color });
+        const { color, code } = params;
+        return this.post(`/color`, { color, code });
     };
 }

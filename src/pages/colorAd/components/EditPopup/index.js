@@ -14,19 +14,30 @@ const cx = classNames.bind(styles);
 function EditPopup(data) {
     const schema = yup.object().shape({
         color: yup.string().required('Hãy điền đầy đủ trường này'),
+        code: yup.string().required('Hãy điền đầy đủ trường này'),
     });
     const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
 
     const color = data.data;
     const handleOpenPopup = data.onclick;
-    const field = {
-        type: 'text',
-        name: 'color',
-        placeholder: 'Nhập màu vào đây',
-        value: color.color,
-    };
+    const fields = [
+        {
+            type: 'text',
+            name: 'color',
+            placeholder: 'Nhập màu vào đây',
+            value: color.color,
+        },
+        {
+            type: 'text',
+            name: 'code',
+            placeholder: 'Nhập màu vào đây',
+            value: color.code,
+        },
+    ];
     const InputField = () => {
-        return <FormGroup field={field} register={register} />;
+        return fields.map((field, index) => {
+            return <FormGroup field={field} register={register} key={index} />;
+        });
     };
 
     const handleClick = (e) => {
@@ -35,6 +46,7 @@ function EditPopup(data) {
     const colorservice = new ColorService();
     const onEdit = async (variableEdit) => {
         variableEdit.id = color.id;
+        console.log(variableEdit);
         try {
             await colorservice.edit(variableEdit);
             handleOpenPopup();
