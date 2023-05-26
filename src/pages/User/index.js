@@ -87,43 +87,83 @@ function User() {
                         </div>
                     </div>
                 </div>
-                <form className={cx('right')} ref={rightContainerBt}>
-                    <div className={cx('changeInf')}>
-                        <label htmlFor="avatar" className={cx('center')}>
-                            Đổi thông tin cá nhân
-                        </label>
-                        <div className={cx('changeAvt')}>
-                            <input
-                                type="file"
-                                className={cx('choose')}
-                                id="avatar"
-                                name="avatar"
-                                accept="image/png, image/jpeg"
-                                onChange={(e) => setSelectedImage(URL.createObjectURL(e.target.files[0]))}
-                            />
-                        </div>
-                        <div className={cx('changeName')}>
-                            <span>Đổi họ và tên</span>
-                            <input type="text" name="fullName" placeholder="Type your name" />
-                        </div>
-                        <div className={cx('changeUserName')}>
-                            <span>Đổi Username</span>
-                            <input type="text" name="userName" placeholder="Type your user name" />
-                        </div>
-                        <div className={cx('changeAddress')}>
-                            <span>Đổi địa chỉ</span>
-                            <input type="text" name="passWord" placeholder="Type your address" />
-                        </div>
-                        <div className={cx('email')}>
-                            <span>Đổi email</span>
-                            <input type="text" name="email" placeholder="Type your email" />
-                        </div>
+                <div className={cx('wrap-right')}>
+                    <form className={cx('right')} ref={rightContainerBt}>
+                        <div className={cx('changeInf')}>
+                            <label htmlFor="avatar" className={cx('center')}>
+                                Đổi thông tin cá nhân
+                            </label>
+                            <div className={cx('changeAvt')}>
+                                <input
+                                    type="file"
+                                    className={cx('choose')}
+                                    id="avatar"
+                                    name="avatar"
+                                    accept="image/png, image/jpeg"
+                                    onChange={(e) => setSelectedImage(URL.createObjectURL(e.target.files[0]))}
+                                />
+                            </div>
+                            <div className={cx('changeName')}>
+                                <span>Đổi họ và tên</span>
+                                <input type="text" name="fullName" placeholder="Type your name" />
+                            </div>
+                            <div className={cx('changeUserName')}>
+                                <span>Đổi Username</span>
+                                <input type="text" name="userName" placeholder="Type your user name" />
+                            </div>
+                            <div className={cx('changeAddress')}>
+                                <span>Đổi địa chỉ</span>
+                                <input type="text" name="passWord" placeholder="Type your address" />
+                            </div>
+                            <div className={cx('email')}>
+                                <span>Đổi email</span>
+                                <input type="text" name="email" placeholder="Type your email" />
+                            </div>
 
-                        <div className={cx('edit')}>
-                            <div>Cập nhật</div>
+                            <div className={cx('edit')}>
+                                <div>Cập nhật</div>
+                            </div>
+                        </div>
+                    </form>
+                    <div className={cx('popupdelete')}>
+                        <p className={cx('question')}>Bạn có chắc chắc muốn xóa tài khoản này?</p>
+                        <p className={cx('warning')}>Hành động này không thể hoàn tác !</p>
+                        <div className={cx('boxBtnPopup')}>
+                            <div className={cx('confirm-dl')}>Xác Nhận</div>
+                            <div className={cx('cancel-dl')}>Hủy</div>
                         </div>
                     </div>
-                </form>
+                    <div className={cx('boxChangePass')}>
+                        <p className={cx('name')}>Đổi Mật Khẩu</p>
+                        <form className={cx('boxInput')}>
+                            <input
+                                type="password"
+                                className={cx('oldPass')}
+                                id="oldPass"
+                                name="oldPass"
+                                placeholder="Nhập mật khẩu cũ"
+                            />
+                            <input
+                                type="password"
+                                className={cx('newPass')}
+                                id="newPass"
+                                name="newPass"
+                                placeholder="Nhập mật khẩu mới (>6 kí tự)"
+                            />
+                            <input
+                                type="password"
+                                className={cx('confirmNewPass')}
+                                id="confirmNewPass"
+                                name="confirmNewPass"
+                                placeholder="Nhập lại mật khẩu mới"
+                            />
+                            <div className={cx('boxBtnPopup')}>
+                                <div className={cx('confirm-dl')}>Xác Nhận</div>
+                                <div className={cx('cancel-dl')}>Hủy</div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     );
