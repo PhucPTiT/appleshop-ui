@@ -67,17 +67,23 @@ function Order() {
         });
     };
 
-    const handleOpenPopupCmt = (listProduct) => {
-        setVisibleComment({ listProduct, userId });
+    const handleOpenPopupCmt = (listProduct, orderId) => {
+        setVisibleComment({ listProduct, userId, orderId });
         document.body.style.overflow = 'hidden';
     };
     const handleClosePopupCmt = () => {
         setVisibleComment(null);
         document.body.style.overflow = 'auto';
     };
+
+    const handleLoading = () => {
+        setIsLoading(!isLoading);
+    };
     return (
         <div className={cx('container')}>
-            {visibleComment && <PopupComment props={visibleComment} remove={handleClosePopupCmt} />}
+            {visibleComment && (
+                <PopupComment props={visibleComment} remove={handleClosePopupCmt} loading={handleLoading} />
+            )}
             {showBackToTop && (
                 <button className={cx('backToTop')} onClick={handleBackToTop} ref={backToTopRef}>
                     <FaArrowUp />
@@ -101,6 +107,7 @@ function Order() {
                     {orders &&
                         orders.map((order, index) => {
                             const {
+                                id,
                                 sku,
                                 fullName,
                                 orderPhone,
@@ -219,14 +226,14 @@ function Order() {
                                                                 Hủy đơn hàng
                                                             </Button>
                                                         )}
-                                                        {status === 'Đang giao hàng' && (
+                                                        {status === 'Giao hàng thành công' && (
                                                             <Button onclick={() => handleCofirm()} color="#0664f9">
                                                                 Đã nhận được hàng
                                                             </Button>
                                                         )}
                                                         {status === 'Đơn hàng đã được hoàn thành' && checkCmt === 0 && (
                                                             <Button
-                                                                onclick={() => handleOpenPopupCmt(orderItemDTOs)}
+                                                                onclick={() => handleOpenPopupCmt(orderItemDTOs, id)}
                                                                 color="#0664f9"
                                                             >
                                                                 Đánh giá

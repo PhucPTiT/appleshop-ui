@@ -57,16 +57,7 @@ function OrderAd() {
                 <div className={cx('infor')}>
                     {orders &&
                         filteredOrders.map((order, index) => {
-                            const {
-                                sku,
-                                fullName,
-                                orderPhone,
-                                email,
-                                orderAddress,
-                                orderItemDTOs,
-                                totalPrice,
-                                status,
-                            } = order;
+                            const { sku, fullName, orderPhone, email, orderAddress, orderItemDTOs, totalPrice } = order;
                             const orderTime = new Date(order.orderTime);
                             const formattedDate = orderTime.toLocaleString();
                             return (

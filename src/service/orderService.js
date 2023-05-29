@@ -15,4 +15,8 @@ export class OrderService extends ServiceBase {
         const { id } = params;
         return this.put(`/order/confirm/${id}`, params);
     };
+    changeCheckOrder = async (params) => {
+        const { orderId } = params;
+        return this.put(`/order/change/${orderId}`);
+    };
 }

@@ -4,19 +4,70 @@ import Button from '~/components/Button';
 import { FaStar, FaTimes } from 'react-icons/fa';
 import { createPortal } from 'react-dom';
 import { useState } from 'react';
+import { CommentService } from '~/service/commentService';
+import { OrderService } from '~/service/orderService';
 
 const cx = classNames.bind(styles);
 
 function PopupComment(props) {
-    const { listProduct, userId } = props.props;
-    console.log(props.remove);
+    const { listProduct, userId, orderId } = props.props;
     const close = props.remove;
-    const [rating, setRating] = useState(1);
+    const loading = props.loading;
+    const [productRatings, setProductRatings] = useState({});
+    const [validForm, setValidForm] = useState(true);
 
-    const handleStarClick = (starIndex) => {
-        setRating(starIndex);
+    const handleStarClick = (productId, starIndex) => {
+        setProductRatings((prevRatings) => ({
+            ...prevRatings,
+            [productId]: starIndex,
+        }));
     };
 
+    const handleComplete = () => {
+        const comments = [];
+
+        let isFormValid = true;
+        const commentService = new CommentService();
+        const orderService = new OrderService();
+        listProduct.forEach((product) => {
+            const { id, name } = product;
+            const rating = productRatings[id] || 1;
+            const commentValue = document.getElementById(`comment-${id}`).value.trim();
+
+            if (commentValue === '') {
+                isFormValid = false;
+                document.getElementById(`comment-${id}`).classList.add(cx('error'));
+            } else {
+                comments.push({
+                    rating: rating,
+                    comment: commentValue,
+                    userId: userId,
+                    productName: name,
+                });
+                document.getElementById(`comment-${id}`).classList.remove(cx('error'));
+            }
+        });
+
+        if (isFormValid) {
+            setValidForm(true);
+            comments.map((comment) => {
+                const fetchData = async function () {
+                    const res = await commentService.add(comment);
+                    return res;
+                };
+                fetchData();
+            });
+            const fetchData = async () => {
+                const res = await orderService.changeCheckOrder({ orderId });
+                return res;
+            };
+            fetchData();
+            close();
+            loading();
+        } else {
+            setValidForm(false);
+        }
+    };
     return createPortal(
         <>
             <div className={cx('wrap')}>
@@ -28,32 +79,43 @@ function PopupComment(props) {
                     <div className={cx('body')}>
                         <div className={cx('list')}>
                             {listProduct.map((product, index) => {
-                                const { image, name } = product;
+                                const { image, name, id } = product;
+                                const productRating = productRatings[id] || 1;
                                 return (
                                     <div className={cx('item')} key={index}>
                                         <div className={cx('product')}>
-                                            <img src={image} alt="Hình ảnh của sản phẩm"></img>
+                                            <img src={image} alt="Hình ảnh của sản phẩm" />
                                             <p className={cx('product_name')}>{name}</p>
                                         </div>
                                         <ul className="rating">
                                             {Array(5)
                                                 .fill(0)
                                                 .map((_, starIndex) => (
-                                                    <li key={starIndex} onClick={() => handleStarClick(starIndex + 1)}>
-                                                        <FaStar className={starIndex < rating ? cx('yellow') : ''} />
+                                                    <li
+                                                        key={starIndex}
+                                                        onClick={() => handleStarClick(id, starIndex + 1)}
+                                                    >
+                                                        <FaStar
+                                                            className={starIndex < productRating ? cx('yellow') : ''}
+                                                        />
                                                     </li>
                                                 ))}
                                         </ul>
                                         <textarea
+                                            id={`comment-${id}`}
                                             maxLength={2000}
                                             type="text"
                                             className={cx('comment')}
-                                            placeholder="Hãy chia sẻ cảm nhận của bạn về sản phẩm"
-                                        ></textarea>
-                                        <Button color="#32373d">Hoàn tất</Button>
+                                        />
                                     </div>
                                 );
                             })}
+                            <div className={cx('btn')}>
+                                <Button color="#32373d" onclick={handleComplete}>
+                                    Hoàn tất
+                                </Button>
+                            </div>
+                            {!validForm && <p className={cx('error-message')}>Vui lòng đánh giá tất cả các sản phẩm</p>}
                         </div>
                     </div>
                 </div>
