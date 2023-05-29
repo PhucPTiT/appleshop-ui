@@ -13,6 +13,7 @@ import Detail from '~/pages/detail';
 import Home from '~/pages/home';
 import MemoryAd from '~/pages/memoryad';
 import Order from '~/pages/order';
+import OrderAd from '~/pages/orderad';
 import ProductAd from '~/pages/productad';
 
 const router = createBrowserRouter([
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
             { path: 'memory', element: <MemoryAd /> },
             { path: 'color', element: <ColorAd /> },
             { path: 'product', element: <ProductAd /> },
+            { path: 'order', element: <OrderAd /> },
         ],
     },
     {

@@ -46,7 +46,6 @@ function EditPopup(data) {
     const colorservice = new ColorService();
     const onEdit = async (variableEdit) => {
         variableEdit.id = color.id;
-        console.log(variableEdit);
         try {
             await colorservice.edit(variableEdit);
             handleOpenPopup();

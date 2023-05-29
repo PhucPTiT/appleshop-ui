@@ -8,8 +8,11 @@ export class OrderService extends ServiceBase {
     add = async (params) => {
         return this.post(`/order`, params);
     };
-    update = async (params) => {
-        const id = params;
-        return this.put(`/order/confirm/${id}`);
+    viewAll = async () => {
+        return this.get(`/order`);
+    };
+    changeStatus = async (params) => {
+        const { id } = params;
+        return this.put(`/order/confirm/${id}`, params);
     };
 }

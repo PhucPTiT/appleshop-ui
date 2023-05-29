@@ -278,8 +278,6 @@ function EditProduct(props) {
             values.list = check;
             values.imgLinks = images;
             values.id = id;
-            // console.log(variableEdit);
-            // variableEdit.id = data.id;
             try {
                 await productService.edit(values);
                 handleOpenEditPopup();

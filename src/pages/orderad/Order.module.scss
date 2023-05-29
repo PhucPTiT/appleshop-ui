@@ -16,29 +16,16 @@
         color: $gray-800;
         font-weight: 600;
         background-color: $gray-300;
-    }
-    .thank {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        img {
-            width: 106px;
-        }
-        .talk {
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 24px;
-        }
-        .tel {
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 20px;
-            a {
-                color: $gray-800;
-                text-decoration: none;
-                margin-left: 4px;
-                font-weight: 600;
-                font-size: 16px;
+        justify-content: space-between;
+        &-right {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            select {
+                outline: none;
+                border: none;
+                border-radius: 6px;
             }
         }
     }
@@ -53,7 +40,7 @@
             flex-direction: column;
             margin: 24px;
             padding: 48px 0;
-            width: 80%;
+            width: 100%;
             background-color: #fff;
             border-radius: 8px;
             .person {
@@ -123,25 +110,4 @@
 .note {
     background-color: $gray-300 !important;
     transform: scale(1.05) !important;
-}
-.backToTop {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #ffffff;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: opacity 0.3s, transform 0.3s;
-    opacity: 0.5;
-
-    &:hover {
-        opacity: 1;
-    }
 }

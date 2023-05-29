@@ -1,105 +1,62 @@
 import classNames from 'classnames/bind';
 import styles from './Order.module.scss';
 import { OrderService } from '~/service/orderService';
-import { useEffect, useRef, useState } from 'react';
-import jwt_decode from 'jwt-decode';
-import Button from '~/components/Button';
-import { FaArrowUp, FaShippingFast } from 'react-icons/fa';
-import { useLocation } from 'react-router-dom';
-import { PopupComment } from './component';
+import { useEffect, useState } from 'react';
 
+import { FaFilter, FaShippingFast } from 'react-icons/fa';
 const cx = classNames.bind(styles);
-function Order() {
-    const location = useLocation();
-    let isScroll = location.state;
-    const token = localStorage.getItem('token');
-    const decode = jwt_decode(token);
-    const userId = decode.id;
+function OrderAd() {
     const [orders, setOrders] = useState();
+    const [filterValue, setFilterValue] = useState('all');
     const [isLoading, setIsLoading] = useState(false);
-    const scrollRef = useRef(null);
-
-    const [visibleComment, setVisibleComment] = useState();
-
     useEffect(() => {
         const orderService = new OrderService();
         const fetchData = async function () {
-            const res = await orderService.view({ userId });
+            const res = await orderService.viewAll();
             setOrders(res);
-            setIsLoading(false);
             return res;
         };
         fetchData();
-    }, [userId, isLoading]);
-
-    useEffect(() => {
-        if (isScroll === true && scrollRef.current) {
-            scrollRef.current.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
-            const note = cx('note');
-            scrollRef.current.classList.add(note);
-            isScroll = false;
-            setTimeout(() => {
-                scrollRef.current.classList.remove(note);
-            }, 1200);
-        }
-    }, [orders, isScroll]);
-
-    const [showBackToTop, setShowBackToTop] = useState(false);
-    const backToTopRef = useRef(null);
-    const handleScroll = () => {
-        const scrollPosition = window.pageYOffset;
-        const windowHeight = window.innerHeight;
-        const scrollThreshold = windowHeight / 2;
-
-        setShowBackToTop(scrollPosition > scrollThreshold);
-    };
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
     }, []);
-    const handleBackToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-        });
+
+    const handleChangeStatus = (e, order) => {
+        const orderCopy = order;
+        orderCopy.status = e.target.value;
+        const orderService = new OrderService();
+        const fetchData = async function () {
+            const res = await orderService.changeStatus(orderCopy);
+            setIsLoading(!isLoading);
+            return res;
+        };
+        fetchData();
     };
 
-    const handleOpenPopupCmt = (listProduct) => {
-        setVisibleComment({ listProduct, userId });
-        document.body.style.overflow = 'hidden';
+    const handleFilter = (e) => {
+        setFilterValue(e.target.value);
     };
-    const handleClosePopupCmt = () => {
-        setVisibleComment(null);
-        document.body.style.overflow = 'auto';
-    };
+    const filteredOrders = filterValue !== 'all' ? orders.filter((order) => order.status === filterValue) : orders;
     return (
         <div className={cx('container')}>
-            {visibleComment && <PopupComment props={visibleComment} remove={handleClosePopupCmt} />}
-            {showBackToTop && (
-                <button className={cx('backToTop')} onClick={handleBackToTop} ref={backToTopRef}>
-                    <FaArrowUp />
-                </button>
-            )}
             <div className={cx('order')}>
-                <div className={cx('head')}>Thông tin đặt hàng</div>
-                <div className={cx('thank')}>
-                    <img
-                        src={require('~/assets/image/order_success.png')}
-                        className={cx('order_thanks')}
-                        alt="Hình ảnh đặt hàng thành công"
-                    ></img>
-                    <p className={cx('talk')}>Cảm ơn quý khách đã mua hàng tại Studio</p>
-                    <p className={cx('tel')}>
-                        Nếu có điều gì thắc mắc xin liên hệ bộ phận chăm sóc khách hàng
-                        <a href="tel:18006616">18006616</a>
-                    </p>
+                <div className={cx('head')}>
+                    <div className={cx('head-left')}>QUẢN LÝ ĐƠN HÀNG</div>
+                    <div className={cx('head-right')}>
+                        <FaFilter />
+                        <select defaultValue={filterValue} onChange={(e) => handleFilter(e)}>
+                            <option value="all">Tất cả</option>
+                            <option value="Chờ xác nhận">Chờ xác nhận</option>
+                            <option value="Đã xác nhận">Đã xác nhận</option>
+                            <option value="Đang vận chuyển">Đang vận chuyển</option>
+                            <option value="Đang giao hàng">Đang giao hàng</option>
+                            <option value="Giao hàng thành công">Giao hàng thành công</option>
+                            <option value="Đơn hàng đã được hoàn thành">Đơn hàng đã được hoàn thành</option>
+                            <option value="Hủy đơn hàng">Hủy đơn hàng</option>
+                        </select>
+                    </div>
                 </div>
                 <div className={cx('infor')}>
                     {orders &&
-                        orders.map((order, index) => {
+                        filteredOrders.map((order, index) => {
                             const {
                                 sku,
                                 fullName,
@@ -109,34 +66,11 @@ function Order() {
                                 orderItemDTOs,
                                 totalPrice,
                                 status,
-                                checkCmt,
                             } = order;
-                            const handleCofirm = () => {
-                                order.status = 'Đơn hàng đã được hoàn thành';
-                                const orderService = new OrderService();
-                                const fetchData = async function () {
-                                    const res = await orderService.changeStatus(order);
-                                    return res;
-                                };
-                                fetchData();
-                                setIsLoading(true);
-                            };
                             const orderTime = new Date(order.orderTime);
                             const formattedDate = orderTime.toLocaleString();
-                            const isLastItem = index === orders.length - 1;
-
-                            const handleCancel = () => {
-                                order.status = 'Hủy đơn hàng';
-                                const orderService = new OrderService();
-                                const fetchData = async function () {
-                                    const res = await orderService.changeStatus(order);
-                                    return res;
-                                };
-                                fetchData();
-                                setIsLoading(true);
-                            };
                             return (
-                                <div className={cx('item')} key={index} ref={isLastItem ? scrollRef : null}>
+                                <div className={cx('item')} key={index}>
                                     <table className={cx('person')}>
                                         <tbody>
                                             <tr>
@@ -212,26 +146,34 @@ function Order() {
                                                     <div className={cx('status')}>
                                                         <div>
                                                             <FaShippingFast />
-                                                            {status}
-                                                        </div>
-                                                        {status === 'Chờ xác nhận' && (
-                                                            <Button onclick={() => handleCancel()} color="red">
-                                                                Hủy đơn hàng
-                                                            </Button>
-                                                        )}
-                                                        {status === 'Đang giao hàng' && (
-                                                            <Button onclick={() => handleCofirm()} color="#0664f9">
-                                                                Đã nhận được hàng
-                                                            </Button>
-                                                        )}
-                                                        {status === 'Đơn hàng đã được hoàn thành' && checkCmt === 0 && (
-                                                            <Button
-                                                                onclick={() => handleOpenPopupCmt(orderItemDTOs)}
-                                                                color="#0664f9"
+                                                            <select
+                                                                className={cx('select')}
+                                                                style={{ color: 'green' }}
+                                                                onChange={(e) => handleChangeStatus(e, order)}
+                                                                value={order.status}
                                                             >
-                                                                Đánh giá
-                                                            </Button>
-                                                        )}
+                                                                <option
+                                                                    disabled
+                                                                    style={{ display: 'none' }}
+                                                                    value="Chờ xác nhận"
+                                                                >
+                                                                    Chờ xác nhận
+                                                                </option>
+                                                                <option value="Đã xác nhận">Đã xác nhận</option>
+                                                                <option value="Đang vận chuyển">Đang vận chuyển</option>
+                                                                <option value="Đang giao hàng">Đang giao hàng</option>
+                                                                <option value="Giao hàng thành công">
+                                                                    Giao hàng thành công
+                                                                </option>
+                                                                <option
+                                                                    style={{ display: 'none' }}
+                                                                    value="Đơn hàng đã được hoàn thành"
+                                                                >
+                                                                    Đơn hàng đã được hoàn thành
+                                                                </option>
+                                                                <option value="Hủy đơn hàng">Hủy đơn hàng</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -252,4 +194,4 @@ function Order() {
     );
 }
 
-export default Order;
+export default OrderAd;
