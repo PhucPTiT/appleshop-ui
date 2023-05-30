@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './User.module.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { useEffect, useRef, useState } from 'react';
 import { AuthService } from '~/service/authService';

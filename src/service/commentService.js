@@ -1,20 +1,24 @@
 const { ServiceBase } = require('~/config/service-base');
 
 export class CommentService extends ServiceBase {
-    // view = async (params) => {
-    //     const { userId } = params;
-    //     return this.get(`/cart/user/${userId}`);
-    // };
-    // remove = async (params) => {
-    //     const id = params;
-    //     return this.delete(`/cart/${id}`);
-    // };
+    remove = async (params) => {
+        const id = params;
+        return this.delete(`/comment/${id}`);
+    };
     add = async (params) => {
         const { userId, productName, rating, comment } = params;
         return this.post(`/comment`, { userId, productName, rating, comment });
     };
-    // removeAll = async (params) => {
-    //     const id = params;
-    //     return this.delete(`/cart/user/${id}`);
-    // };
+    removeReply = async (params) => {
+        const id = params;
+        return this.delete(`/reply/${id}`);
+    };
+    changeCmt = async (params) => {
+        const { id, comment } = params;
+        return this.put(`/comment/${id}`, { comment });
+    };
+    changeRep = async (params) => {
+        const { id, reply } = params;
+        return this.put(`/reply/${id}`, { reply });
+    };
 }

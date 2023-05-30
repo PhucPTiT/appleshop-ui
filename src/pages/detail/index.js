@@ -12,9 +12,12 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import './swipper.scss';
-import { FaMemory, FaMoneyBillWave } from 'react-icons/fa';
+import { FaChevronCircleDown, FaMemory, FaMoneyBillWave } from 'react-icons/fa';
 import jwt_decode from 'jwt-decode';
 import { CartService } from '~/service/cartService';
+import RatingStars from '~/components/RenderStar';
+import { AuthService } from '~/service/authService';
+import { CommentService } from '~/service/commentService';
 
 const cx = classNames.bind(styles);
 
@@ -27,6 +30,7 @@ function Detail() {
     const [colorSelect, setColorSelect] = useState(0);
     const [cart, setCart] = useState({});
     const [check, setCheck] = useState(false);
+    const [isLoading, setIsLoading] = useState();
 
     useEffect(() => {
         const cartService = new CartService();
@@ -47,10 +51,20 @@ function Detail() {
             return res;
         };
         fetchData();
-    }, [productCode]);
-
-    const { imgLinks, name, list, colorDTOs } = product;
+    }, [productCode, isLoading]);
+    const { imgLinks, name, list, colorDTOs, commentDTOs } = product;
     const imageArray = imgLinks ? imgLinks.split(' ') : '';
+
+    const commentService = new CommentService();
+    const deleteComment = async (id) => {
+        await commentService.remove(id);
+        setIsLoading(!isLoading);
+    };
+    const deleteReply = async (id) => {
+        await commentService.removeReply(id);
+        setIsLoading(!isLoading);
+    };
+
     const SwipperImage = () => {
         return (
             <>
@@ -80,7 +94,8 @@ function Detail() {
             </>
         );
     };
-
+    const token = localStorage.getItem('token');
+    const decoded = jwt_decode(token);
     const OnBuy = () => {
         const token = localStorage.getItem('token');
         const decoded = jwt_decode(token);
@@ -92,6 +107,40 @@ function Detail() {
         };
         setCart(item);
         setCheck(true);
+    };
+
+    function calculateAverageRating(commentDTOs) {
+        if (commentDTOs.length === 0) {
+            return 0;
+        }
+
+        const totalRating = commentDTOs.reduce((sum, comment) => {
+            return sum + comment.rating;
+        }, 0);
+
+        const averageRating = totalRating / commentDTOs.length;
+        return Math.round(averageRating);
+    }
+
+    function calculateElapsedTime(timeCmt) {
+        const currentTime = new Date().getTime();
+        const timeDifference = currentTime - timeCmt;
+
+        const millisecondsInDay = 24 * 60 * 60 * 1000;
+        const daysDifference = Math.floor(timeDifference / millisecondsInDay);
+
+        if (daysDifference >= 1) {
+            return `${daysDifference} ngày trước`;
+        } else {
+            const millisecondsInHour = 60 * 60 * 1000;
+            const hoursDifference = Math.floor(timeDifference / millisecondsInHour);
+            return `${hoursDifference} giờ trước`;
+        }
+    }
+    const [isEdit, setIsEdit] = useState(false);
+    const handlEdit = () => {
+        console.log('vao');
+        setIsEdit(true);
     };
     return (
         <div className={cx('container')}>
@@ -169,6 +218,102 @@ function Detail() {
                     </div>
                 </div>
             </div>
+            {commentDTOs && (
+                <div className={cx('box-review')}>
+                    <div className={cx('rating')}>
+                        <p>Đánh giá trung bình</p>
+                        <p className={cx('rating_avg')}>{calculateAverageRating(commentDTOs)}/5</p>
+                        <RatingStars averageRating={calculateAverageRating(commentDTOs)} />
+                        <p className={cx('count')}>{commentDTOs.length} đánh giá</p>
+                    </div>
+                    <div className={cx('comment')}>
+                        {commentDTOs?.map((comment, index) => {
+                            const { rating, adminName, reply, id, user, userName } = comment;
+                            return (
+                                <div className={cx('comment_item')} key={index}>
+                                    <div className={cx('comment_user')}>
+                                        <div
+                                            className={cx('avartar')}
+                                            style={{ backgroundImage: user?.images && `url("${user.images}")` }}
+                                        ></div>
+                                        <div className={cx('comment_user-content')}>
+                                            <div className={cx('head')}>
+                                                <div className={cx('username')}>{userName}</div>
+                                                <div className={cx('checked')}>
+                                                    <FaChevronCircleDown /> Đã mua hàng tại Studio
+                                                </div>
+                                            </div>
+                                            <div className={cx('star')}>
+                                                <RatingStars averageRating={rating} />
+                                            </div>
+                                            <input disabled className={cx('content')} value={comment.comment} />
+                                            {decoded.role === 0 && (
+                                                <div className={cx('feature_user')}>
+                                                    <div className={cx('time')}>
+                                                        {calculateElapsedTime(comment.timeCmt)}
+                                                    </div>
+                                                    <div className={cx('ft')}>Chỉnh sửa</div>
+                                                    <div onClick={() => deleteComment(id)} className={cx('ft')}>
+                                                        Xóa
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {decoded.role === 1 && (
+                                                <div className={cx('feature_admin')}>
+                                                    <div className={cx('time')}>
+                                                        {calculateElapsedTime(comment.timeCmt)}
+                                                    </div>
+                                                    {reply === null && <div className={cx('ft')}>Phản hồi</div>}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {reply && (
+                                        <div className={cx('comment_admin')}>
+                                            <div className={cx('avartar_admin')}></div>
+                                            <div className={cx('comment_admin-content')}>
+                                                <div className={cx('username')}>
+                                                    <p>{adminName}</p>
+                                                    <p className={cx('role')}>Quản trị viên</p>
+                                                </div>
+                                                {isEdit ? (
+                                                    <input
+                                                        className={cx('content')}
+                                                        value={reply}
+                                                        // onChange={handleInputChange}
+                                                    />
+                                                ) : (
+                                                    <input
+                                                        id="reply"
+                                                        disabled
+                                                        className={cx('content')}
+                                                        value={reply}
+                                                    />
+                                                )}
+                                                {decoded.role === 1 && (
+                                                    <div className={cx('feature_admin')}>
+                                                        <div className={cx('time')}>
+                                                            {calculateElapsedTime(comment.timeRep)}
+                                                        </div>
+                                                        <label htmlFor="reply">
+                                                            <div onClick={() => handlEdit()} className={cx('ft')}>
+                                                                Chỉnh sửa
+                                                            </div>
+                                                        </label>
+                                                        <div onClick={() => deleteReply(id)} className={cx('ft')}>
+                                                            Xóa
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
