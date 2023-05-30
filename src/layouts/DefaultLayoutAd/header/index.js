@@ -1,11 +1,10 @@
 import classNames from 'classnames/bind';
 import styles from './HeaderAd.module.scss';
 import { FaBars, FaSignOutAlt, FaUser } from 'react-icons/fa';
-import SearchAd from '~/components/SearchAd';
 import Tippy from '@tippyjs/react/headless';
 import { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -45,8 +44,10 @@ function HeaderAd(props) {
     return (
         <div className={cx('header')}>
             <FaBars className={cx('fabars')} onClick={onClick} />
-            <p className={cx('brand')}>WEB ADMIN</p>
-            <SearchAd />
+            <Link to="" className={cx('brand')}>
+                WEB ADMIN
+            </Link>
+            {/* <SearchAd /> */}
             <div>
                 <Tippy
                     interactive

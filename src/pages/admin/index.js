@@ -5,17 +5,17 @@ import ProductAd from '../productad';
 import MemoryAd from '../memoryad';
 import ColorAd from '../colorAd';
 
-
 const cx = classNames.bind(styles);
 
 function Admin() {
     return (
         <div className={cx('adminpage')}>
-            <CategoryAd />
-            <MemoryAd/>
-            <ColorAd/>
+            <div className={cx('row')}>
+                <CategoryAd />
+                <MemoryAd />
+                <ColorAd />
+            </div>
             <ProductAd />
-
         </div>
     );
 }

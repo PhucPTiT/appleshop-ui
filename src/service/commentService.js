@@ -18,8 +18,8 @@ export class CommentService extends ServiceBase {
         return this.put(`/comment/${id}`, { comment });
     };
     changeRep = async (params) => {
-        const { id, reply } = params;
-        return this.put(`/reply/${id}`, { reply });
+        const { id, reply, adminId } = params;
+        return this.put(`/reply/${id}`, { reply, adminId });
     };
     addRep = async (params) => {
         const { id, reply, adminId } = params;

@@ -53,10 +53,13 @@ function Header() {
                         <div className={cx('name')}>{name}</div>
                         <div className={cx('username')}>{username}</div>
                     </Link>
-                    <Link to="./order" className={cx('order', 'item')}>
-                        <FaBarcode />
-                        <div className={cx('view')}>Xem hóa đơn mua hàng</div>
-                    </Link>
+
+                    {decoded.role === 0 && (
+                        <Link to="./order" className={cx('order', 'item')}>
+                            <FaBarcode />
+                            <div className={cx('view')}>Xem hóa đơn mua hàng</div>
+                        </Link>
+                    )}
                     <div className={cx('sign-out', 'item')} onClick={handleSignOut}>
                         <FaSignOutAlt className={cx('icon')} />
                         Đăng Xuất
@@ -66,6 +69,8 @@ function Header() {
         }
         return <div>Đây là menu User</div>;
     };
+    const token2 = localStorage.getItem('token');
+    const decoded = token2 ? jwt_decode(token2) : null;
     return (
         <div>
             <div className={cx('header')}>
@@ -104,12 +109,14 @@ function Header() {
                                         </div>
                                     </Tippy>
                                 </div>
-                                <Link to="/cart" style={{ textDecoration: 'none' }}>
-                                    <div className={cx('cart')}>
-                                        <FaShoppingCart size="24px" color="#fff" />
-                                        <span>Giỏ hàng</span>
-                                    </div>
-                                </Link>
+                                {decoded?.role === 0 && (
+                                    <Link to="/cart" style={{ textDecoration: 'none' }}>
+                                        <div className={cx('cart')}>
+                                            <FaShoppingCart size="24px" color="#fff" />
+                                            <span>Giỏ hàng</span>
+                                        </div>
+                                    </Link>
+                                )}
                             </div>
                         )}
                     </div>

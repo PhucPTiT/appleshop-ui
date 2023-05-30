@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Search() {
+    const token = localStorage.getItem('token');
     const [visible, setVisible] = useState(false);
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -65,7 +66,7 @@ function Search() {
                             const url = `/${encodeURIComponent(categoryCode)}/${encodeURIComponent(code)}`;
 
                             return (
-                                <Link to={url} key={product.id} className={cx('result-item')}>
+                                <Link to={token ? url : '/login'} key={product.id} className={cx('result-item')}>
                                     <div className={cx('left')}>
                                         <img src={imageLinks} alt="Hình ảnh của sản phẩm" />
                                     </div>

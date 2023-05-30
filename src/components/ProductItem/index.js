@@ -1,6 +1,7 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './ProductItem.module.scss';
-import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -9,6 +10,16 @@ function ProductItem(data) {
     const prices = list.map((item) => item.price);
     const types = list.map((item) => item.type);
     const imageArr = imgLinks.split(' ');
+
+    const navigate = useNavigate();
+    const handleViewDetail = () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate(encodeURIComponent(code));
+        } else {
+            navigate('/login');
+        }
+    };
 
     return (
         <div className={cx('product')}>
@@ -45,9 +56,9 @@ function ProductItem(data) {
                 <strike>{Math.round(prices[0] * 1.3).toLocaleString('vi-VN') + ' VNĐ'}</strike>
             </div>
 
-            <Link to={encodeURIComponent(code)} className={cx('btn_view')}>
+            <button className={cx('btn_view')} onClick={handleViewDetail}>
                 <span>Xem chi tiết</span>
-            </Link>
+            </button>
         </div>
     );
 }

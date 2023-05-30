@@ -152,7 +152,8 @@ function Detail() {
         setIsEdit(false);
         if (decoded.role === 1) {
             const reply = replyAd;
-            await commentService.changeRep({ id, reply });
+            const adminId = decoded.id;
+            await commentService.changeRep({ id, reply, adminId });
             setIsLoading(!isLoading);
         } else {
             const comment = replyAd;
@@ -243,9 +244,14 @@ function Detail() {
                                 );
                             })}
                     </div>
-                    <div className={cx('btn-buynow')} onClick={() => OnBuy()}>
+                    <div
+                        className={cx('btn-buynow', decoded.role !== 0 ? 'disabled' : '')}
+                        onClick={decoded.role !== 0 ? null : () => OnBuy()}
+                        style={{ opacity: decoded.role !== 0 ? 0.5 : 1 }}
+                    >
                         MUA NGAY
                     </div>
+
                     <div className={cx('contact')}>
                         <p>
                             Gọi <a href="tel:18006601">1800 6601</a> để được tư vấn mua hàng (Miễn phí)
@@ -264,6 +270,7 @@ function Detail() {
                     <div className={cx('comment')}>
                         {commentDTOs?.map((comment, index) => {
                             const { rating, adminName, reply, id, user, userName } = comment;
+                            console.log(comment);
                             return (
                                 <div className={cx('comment_item')} key={index}>
                                     <div className={cx('comment_user')}>
@@ -294,7 +301,7 @@ function Detail() {
                                                 <div className={cx('time')}>
                                                     {calculateElapsedTime(comment.timeCmt)}
                                                 </div>
-                                                {decoded.role === 0 && (
+                                                {decoded.role === 0 && decoded.username === userName && (
                                                     <label htmlFor={`comment_user${id}`}>
                                                         <div
                                                             onClick={() => handlEdit(comment.comment)}
@@ -304,9 +311,11 @@ function Detail() {
                                                         </div>
                                                     </label>
                                                 )}
-                                                <div onClick={() => deleteComment(id)} className={cx('ft')}>
-                                                    Xóa
-                                                </div>
+                                                {(decoded.role === 1 || decoded.username === userName) && (
+                                                    <div onClick={() => deleteComment(id)} className={cx('ft')}>
+                                                        Xóa
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -328,7 +337,7 @@ function Detail() {
                                                     onChange={(e) => handleEditCmtAdChange(e)}
                                                     onBlur={() => handlEditOff(id)}
                                                 />
-                                                {decoded.role === 1 && (
+                                                {decoded.role === 1 && decoded.username === adminName && (
                                                     <div className={cx('feature_admin')}>
                                                         <div className={cx('time')}>
                                                             {calculateElapsedTime(comment.timeRep)}
