@@ -301,6 +301,21 @@
                     }
                 }
             }
+            .type_rep {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                .admin_rep {
+                    border: 1px solid $gray-200;
+                    padding: 4px;
+                    border-radius: 4px;
+                    margin-left: 60px;
+                }
+                .send {
+                    color: $blue-eye;
+                    cursor: pointer;
+                }
+            }
         }
     }
 }

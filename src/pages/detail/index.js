@@ -12,11 +12,10 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import './swipper.scss';
-import { FaChevronCircleDown, FaMemory, FaMoneyBillWave } from 'react-icons/fa';
+import { FaChevronCircleDown, FaMemory, FaMoneyBillWave, FaPaperPlane } from 'react-icons/fa';
 import jwt_decode from 'jwt-decode';
 import { CartService } from '~/service/cartService';
 import RatingStars from '~/components/RenderStar';
-import { AuthService } from '~/service/authService';
 import { CommentService } from '~/service/commentService';
 
 const cx = classNames.bind(styles);
@@ -126,22 +125,58 @@ function Detail() {
         const currentTime = new Date().getTime();
         const timeDifference = currentTime - timeCmt;
 
-        const millisecondsInDay = 24 * 60 * 60 * 1000;
-        const daysDifference = Math.floor(timeDifference / millisecondsInDay);
+        const millisecondsInMinute = 60 * 1000;
+        const minutesDifference = Math.floor(timeDifference / millisecondsInMinute);
 
-        if (daysDifference >= 1) {
-            return `${daysDifference} ngày trước`;
+        if (minutesDifference < 1) {
+            const millisecondsInSeconds = 1000;
+            const secondsDifference = Math.floor(timeDifference / millisecondsInSeconds);
+            return `${Math.max(secondsDifference, 0)} giây trước`;
+        } else if (minutesDifference < 60) {
+            return `${Math.max(minutesDifference, 0)} phút trước`;
+        } else if (minutesDifference < 1440) {
+            const hoursDifference = Math.floor(minutesDifference / 60);
+            return `${Math.max(hoursDifference, 0)} giờ trước`;
         } else {
-            const millisecondsInHour = 60 * 60 * 1000;
-            const hoursDifference = Math.floor(timeDifference / millisecondsInHour);
-            return `${hoursDifference} giờ trước`;
+            const daysDifference = Math.floor(minutesDifference / 1440);
+            return `${Math.max(daysDifference, 0)} ngày trước`;
         }
     }
+
     const [isEdit, setIsEdit] = useState(false);
-    const handlEdit = () => {
-        console.log('vao');
+    const handlEdit = (str) => {
         setIsEdit(true);
+        setReplyAd(str);
     };
+    const handlEditOff = async (id) => {
+        setIsEdit(false);
+        if (decoded.role === 1) {
+            const reply = replyAd;
+            await commentService.changeRep({ id, reply });
+            setIsLoading(!isLoading);
+        } else {
+            const comment = replyAd;
+            await commentService.changeCmt({ id, comment });
+            setIsLoading(!isLoading);
+        }
+    };
+    const [replyAd, setReplyAd] = useState('');
+    const handdleChangeComment = (e) => {
+        setReplyAd(e.target.value);
+    };
+
+    const handleSendCmt = async (id) => {
+        const adminId = decoded.id;
+        const reply = replyAd;
+        if (reply !== '') {
+            await commentService.addRep({ id, reply, adminId });
+            setIsLoading(!isLoading);
+        }
+    };
+    const handleEditCmtAdChange = (e) => {
+        setReplyAd(e.target.value);
+    };
+
     return (
         <div className={cx('container')}>
             <div className={cx('detail')}>
@@ -246,26 +281,33 @@ function Detail() {
                                             <div className={cx('star')}>
                                                 <RatingStars averageRating={rating} />
                                             </div>
-                                            <input disabled className={cx('content')} value={comment.comment} />
-                                            {decoded.role === 0 && (
-                                                <div className={cx('feature_user')}>
-                                                    <div className={cx('time')}>
-                                                        {calculateElapsedTime(comment.timeCmt)}
-                                                    </div>
-                                                    <div className={cx('ft')}>Chỉnh sửa</div>
-                                                    <div onClick={() => deleteComment(id)} className={cx('ft')}>
-                                                        Xóa
-                                                    </div>
+                                            <input
+                                                disabled={!isEdit}
+                                                id={`comment_user${id}`}
+                                                key={index}
+                                                className={cx('content')}
+                                                defaultValue={comment.comment}
+                                                onChange={(e) => handdleChangeComment(e)}
+                                                onBlur={() => handlEditOff(id)}
+                                            />
+                                            <div className={cx('feature_user')}>
+                                                <div className={cx('time')}>
+                                                    {calculateElapsedTime(comment.timeCmt)}
                                                 </div>
-                                            )}
-                                            {decoded.role === 1 && (
-                                                <div className={cx('feature_admin')}>
-                                                    <div className={cx('time')}>
-                                                        {calculateElapsedTime(comment.timeCmt)}
-                                                    </div>
-                                                    {reply === null && <div className={cx('ft')}>Phản hồi</div>}
+                                                {decoded.role === 0 && (
+                                                    <label htmlFor={`comment_user${id}`}>
+                                                        <div
+                                                            onClick={() => handlEdit(comment.comment)}
+                                                            className={cx('ft')}
+                                                        >
+                                                            Chỉnh sửa
+                                                        </div>
+                                                    </label>
+                                                )}
+                                                <div onClick={() => deleteComment(id)} className={cx('ft')}>
+                                                    Xóa
                                                 </div>
-                                            )}
+                                            </div>
                                         </div>
                                     </div>
                                     {reply && (
@@ -276,27 +318,23 @@ function Detail() {
                                                     <p>{adminName}</p>
                                                     <p className={cx('role')}>Quản trị viên</p>
                                                 </div>
-                                                {isEdit ? (
-                                                    <input
-                                                        className={cx('content')}
-                                                        value={reply}
-                                                        // onChange={handleInputChange}
-                                                    />
-                                                ) : (
-                                                    <input
-                                                        id="reply"
-                                                        disabled
-                                                        className={cx('content')}
-                                                        value={reply}
-                                                    />
-                                                )}
+
+                                                <input
+                                                    id={`reply${id}`}
+                                                    key={id}
+                                                    disabled={!isEdit}
+                                                    className={cx('content')}
+                                                    defaultValue={reply}
+                                                    onChange={(e) => handleEditCmtAdChange(e)}
+                                                    onBlur={() => handlEditOff(id)}
+                                                />
                                                 {decoded.role === 1 && (
                                                     <div className={cx('feature_admin')}>
                                                         <div className={cx('time')}>
                                                             {calculateElapsedTime(comment.timeRep)}
                                                         </div>
-                                                        <label htmlFor="reply">
-                                                            <div onClick={() => handlEdit()} className={cx('ft')}>
+                                                        <label htmlFor={`reply${id}`}>
+                                                            <div onClick={() => handlEdit(reply)} className={cx('ft')}>
                                                                 Chỉnh sửa
                                                             </div>
                                                         </label>
@@ -306,6 +344,17 @@ function Detail() {
                                                     </div>
                                                 )}
                                             </div>
+                                        </div>
+                                    )}
+                                    {(reply === '' || reply === null) && decoded.role === 1 && (
+                                        <div className={cx('type_rep')}>
+                                            <input
+                                                type="text"
+                                                className={cx('admin_rep')}
+                                                placeholder="Nhập câu trả lời của bạn"
+                                                onChange={(e) => handdleChangeComment(e)}
+                                            />
+                                            <FaPaperPlane onClick={() => handleSendCmt(id)} className={cx('send')} />
                                         </div>
                                     )}
                                 </div>
