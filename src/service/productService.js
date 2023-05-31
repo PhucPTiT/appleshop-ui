@@ -22,6 +22,8 @@ export class ProductService extends ServiceBase {
     };
     viewProductByCode = async (params) => {
         const { productCode } = params;
-        return this.get(`/product/code/${productCode}`);
+        const code = productCode;
+        console.log(code);
+        return this.get('/product/code', { code });
     };
 }

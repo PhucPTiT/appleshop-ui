@@ -1,5 +1,5 @@
 .product {
-    max-width: 345px;
+    // max-width: 345px;
     height: 534px;
     border-radius: 12px;
     padding: 24px 12px 32px;
@@ -8,8 +8,11 @@
     flex-direction: column;
     border: solid 1px #edeeef;
     position: relative;
-    flex-basis: 33.33%;
+    // flex-basis: 33.33%;
     background-color: #fff;
+    // flex-shrink: 33.33333%;
+    // flex: 1;
+    width: calc(33.333333333% - 16px);
     &__img {
         background-size: cover;
         background-position: center;
