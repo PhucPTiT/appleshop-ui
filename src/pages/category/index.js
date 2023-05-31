@@ -11,7 +11,7 @@ function Category(props) {
     const { title } = props;
 
     const [filter, setFilter] = useState('default');
-
+    const [isLoading, setIsLoading] = useState(false);
     const handleChangeFilter = (e) => {
         setFilter(e.target.value);
     };
@@ -41,6 +41,7 @@ function Category(props) {
 
     const productsSort = (arrays, attr) => {
         if (attr === 'default') {
+            setIsLoading(!isLoading);
             return arrays;
         } else if (attr === 'incre') {
             arrays.sort((a, b) => {
@@ -59,7 +60,7 @@ function Category(props) {
             setProducts(res);
         };
         fetchData();
-    }, [device]);
+    }, [device, isLoading]);
     useMemo(() => {
         productsSort(products, filter);
     }, [filter]);

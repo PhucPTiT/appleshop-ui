@@ -177,7 +177,6 @@ function Detail() {
     const handleEditCmtAdChange = (e) => {
         setReplyAd(e.target.value);
     };
-
     return (
         <div className={cx('container')}>
             <div className={cx('detail')}>
@@ -259,7 +258,8 @@ function Detail() {
                     </div>
                 </div>
             </div>
-            {commentDTOs && (
+            <div className={cx('description')}>{product.description}</div>
+            {commentDTOs?.length > 0 && (
                 <div className={cx('box-review')}>
                     <div className={cx('rating')}>
                         <p>Đánh giá trung bình</p>
@@ -270,7 +270,6 @@ function Detail() {
                     <div className={cx('comment')}>
                         {commentDTOs?.map((comment, index) => {
                             const { rating, adminName, reply, id, user, userName } = comment;
-                            console.log(comment);
                             return (
                                 <div className={cx('comment_item')} key={index}>
                                     <div className={cx('comment_user')}>

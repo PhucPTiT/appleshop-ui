@@ -10,7 +10,7 @@ const BannerIphone14pro = () => {
 
     return (
         <div className={cx('unit-link')}>
-            <Link to={token ? '/iphone/iPhone 14 Pro Max' : '/login'}>
+            <Link to={token ? '/iphone/iphone_14_pro_max' : '/login'}>
                 <span className={cx('name')}>iPhone 14 Pro</span>
                 <span className={cx('desc')}>by Apple U.S.A</span>
             </Link>
@@ -23,7 +23,7 @@ const Bannerphone14 = () => {
 
     return (
         <div className={cx('unit-link-2')}>
-            <Link to={token ? '/iphone/iPhone 14 Pro Max' : '/login'}>
+            <Link to={token ? '/iphone/iphone_14_pro' : '/login'}>
                 <span className={cx('name')}>iPhone 14</span>
                 <span className={cx('desc')}>Kích thước tuyệt vời - Màu sắc đa dạng</span>
             </Link>

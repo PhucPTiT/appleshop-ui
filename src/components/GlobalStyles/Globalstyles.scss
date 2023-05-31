@@ -17,6 +17,9 @@ body {
     color: $text-color;
     overflow-y: overlay;
 }
+input {
+    width: 100%;
+}
 @font-face {
     font-family: 'Roboto';
     src: url('../../assets/font/Roboto/Roboto-Black.woff2') format('woff2'),

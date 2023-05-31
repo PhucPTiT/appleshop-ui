@@ -4,11 +4,20 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 12px;
+    .description {
+        background-color: #fff;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 400;
+        margin-top: 24px;
+        border-radius: 6px;
+    }
 }
 .detail {
     display: flex;
     .right {
         flex: 1;
+        padding: 0 12px;
         .price {
             margin-top: 12px;
             width: 100%;
